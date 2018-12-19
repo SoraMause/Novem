@@ -403,7 +403,7 @@ int8_t getNextDirKnown(uint8_t direction, uint8_t x, uint8_t y, t_walldata *wall
 				break;
 			}
 		}
-		if (boost < 3) {
+		if (boost < 2) {
 			nextdir = 0;
 		}
 		else {

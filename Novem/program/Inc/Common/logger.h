@@ -4,10 +4,13 @@
 #include <stdint.h>
 
 typedef struct {
-  float distance[2048];
-  float real_distance[2048];
+  float trans_ideal_vel[2048];
+  float trans_vel[2048];
+  float rotation_ideal[2048];
+  float rotation_vel[2048];
   int16_t sensor_left[2048];
   int16_t sensor_right[2048];
+  int16_t sensor_front[2048];
 }t_log_data;
 
 extern t_log_data logger;

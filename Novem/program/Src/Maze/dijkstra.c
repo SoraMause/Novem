@@ -11,7 +11,9 @@
 #include "walldata.h"
 
 uint8_t maze[FIELDY][FIELDX];
-const int16_t runtime[104]={0,//runtime[0]には意味はない．実装上そうなった
+int16_t runtime[104];
+
+const int16_t runtime_curve_priority[104]={0,//runtime[0]には意味はない．実装上そうなった
 10,18,25,32,40,45,49,54,58,63,//GO1,GO2,...を行うためにかかる時間.
 67,72,76,81,85,90,94,99,103,108,
 112,117,121,126,130,135,139,144,148,153,157,
@@ -32,6 +34,41 @@ const int16_t runtime[104]={0,//runtime[0]には意味はない．実装上そ�
 212,215,218,                     //DIA_GO61-GO63を行うためにかかる時間
  0//ストップを意味する．何でもいい．
 };
+
+const int16_t runtime_straight_priority[104] = { 0,//runtime[0]には意味はない．実装上そうなった
+9,15,22,28,35,40,45,50,55,60,//GO1,GO2,...を行うためにかかる時間.
+65,70,74,78,82,86,90,94,98,102,
+105,108,111,114,117,120,123,126,129,132,135,
+ 15,//TURNRを行うためにかかる時間
+ 15,//TURNLを行うためにかかる時間
+ 20,//DIA_TO_CLOTHOIDRを行うためにかかる時間
+ 20,//DIA_TO_CLOTHOIDLを行うためにかかる時間
+ 20,//DIA_FROM_CLOTHOIDRを行うためにかかる時間
+ 20,//DIA_FROM_CLOTHOIDLを行うためにかかる時間
+ 20,//DIA_TURNRを行うためにかかる時間
+ 20,//DIA_TURNLを行うためにかかる時間
+ 7,13,19,24,29,33,40,43,46,49,//DIA_GO1-GO10
+53,56,59,62,65,68,72,75,78,81,//DIA_GO11-GO20
+84,88,91,94,97,100,103,107,110,113,//DIA_GO21-GO30
+116,119,123,126,129,132,135,138,142,145,//DIA_GO31-GO40
+148,151,154,158,161,164,167,170,173,177,//DIA_GO41-GO50
+180,183,186,189,193,196,199,202,205,208,//DIA_GO51-GO60
+212,215,218,                     //DIA_GO61-GO63を行うためにかかる時間
+ 0//ストップを意味する．何でもいい．
+};
+
+void setRunTimeCost( int8_t data ){
+	if ( data == 1 ){
+		for( int i = 0; i < 104; i++ ){
+			runtime[i] = runtime_straight_priority[i];
+		}
+		
+	} else {
+		for( int i = 0; i < 104; i++ ){
+			runtime[i] = runtime_curve_priority[i];
+		}
+	}
+}
  
 //ハッシュ番号をかえす．
 //x      は0-31の5bit
@@ -327,10 +364,12 @@ void inputMazeWallData( t_walldata *wall )
   }	
 }
 
-int8_t getRouteArray( int16_t gx, int16_t gy, int16_t route[256], t_walldata *wall, uint8_t maze_scale, int8_t out_flag )
+int8_t getRouteArray( int16_t gx, int16_t gy, int16_t route[256], t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t out_flag )
 {
 	int8_t check_flag = 0;
   inputMazeWallData( wall );
+
+	setRunTimeCost( _straight );
 	
 	if ( out_flag == 1 ){
 		mazeUpdateMap( gx, gy,wall, maze_scale );

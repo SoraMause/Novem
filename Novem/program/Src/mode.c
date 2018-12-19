@@ -98,8 +98,8 @@ void mode_init( void )
   // to do search param と fast paramで分けれるようにする
   setSlaromOffset( &slarom500, 21.0f, 20.0f, 21.0f, 21.5f, 7200.0f, 630.0f );
 
-  setPIDGain( &translation_gain, 1.0f, 0.0f, 0.0f );  
-  setPIDGain( &rotation_gain, 1.0f, 0.0f, 0.0f ); 
+  setPIDGain( &translation_gain, 1.5f, 30.0f, 0.0f );  
+  setPIDGain( &rotation_gain, 0.45f, 50.0f, 0.0f ); 
 
   // sensor 値設定
   setSensorConstant( &sen_front, 730, 380 );
@@ -124,9 +124,7 @@ void startAction( void )
   HAL_Delay( 300 );
   fullColorLedOut( LED_MAGENTA );
   adcStart();
-  while( 1 ){
-    if( sen_front.now > 600 ) break;
-  }
+  while( sen_front.now < 600 );
   fullColorLedOut( LED_YELLOW );
   buzzerSetMonophonic( C_H_SCALE, 300 );
   adcEnd();
@@ -208,7 +206,7 @@ void mode2( void )
 
   loadWallData( &wall_data );
   
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0 ) == 0 ){
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0 ) == 0 ){
     return;
   }
 
@@ -234,7 +232,8 @@ void mode3( void )
   adcEnd();
   if ( wall_data.save == 1 ){
     agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 0 );
-    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1 );
+    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 1 );
+    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 1 );
   }
   
 }
@@ -243,7 +242,7 @@ void mode3( void )
 void mode4( void )
 {
   funControl( FUN_ON );
-  waitMotion( 2000 );
+  waitMotion( 5000 );
   funControl( FUN_OFF );
 }
 
@@ -267,7 +266,10 @@ void mode5( void )
 void mode6( void )
 {
   startAction();
-  setRotation( 3600.0f, 3600.0f, 360.0f, 0.0f );
+  setRotation( 180.0f, 3600.0f, 360.0f, 0.0f );
+  waitRotation();
+  waitMotion( 300 );
+  setRotation( 180.0f, 3600.0f, 360.0f, 0.0f );
   waitRotation();
   setLogFlag( 0 );
   setControlFlag( 0 );

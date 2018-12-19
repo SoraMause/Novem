@@ -23,8 +23,7 @@
 #define DIA_GO63 102
 #define SNODE 103//ストップを意味する
 
-int8_t getRouteArray( int16_t gx, int16_t gy, int16_t route[256], t_walldata *wall, uint8_t maze_scale, int8_t out_flag );
-
+int8_t getRouteArray( int16_t gx, int16_t gy, int16_t route[256], t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t out_flag );
 void inputMazeWallData( t_walldata *wall );
 
 #endif /* __DIJKSTRA_H */

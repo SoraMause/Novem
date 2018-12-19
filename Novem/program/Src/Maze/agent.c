@@ -311,7 +311,7 @@ void agentSetShortRoute( uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_
 }
 
 
-int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t out_flag )
+int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t out_flag )
 {
   fast_path_init();
 
@@ -329,7 +329,7 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     route[i] = 0;
   }
   
-  if ( getRouteArray( gx, gy, route, wall, maze_scale, out_flag ) ){
+  if ( getRouteArray( gx, gy, route, wall, maze_scale,_straight ,out_flag ) ){
 		//printf("以下の経路が見つかりました\r\n");
     for( i = 0;route[i]!=SNODE;i++){
       if(GO1<=route[i] && route[i]<=GO31){

@@ -414,7 +414,7 @@ void funControl( uint8_t fun_mode )
   int32_t pwm = 0;
 
   if ( fun_mode == FUN_ON ) {
-    pwm = 10;
+    pwm = 30;
   }
 
   if ( buzzer_period_buff != 7 ){
@@ -512,8 +512,8 @@ void update_encoder( t_enc_value *enc, t_run *left, t_run *right )
     enc->right = -1 * enc_r_buff;
   }
 
-  enc_left_omega = (float)enc_value.left * 2.0f / MACHINE_ENC_CNT_PER_ROT  * PI / dt ;
-  enc_right_omega = (float)enc_value.right  * 2.0f / MACHINE_ENC_CNT_PER_ROT  * PI / dt;
+  enc_left_omega = (float)enc->left * 2.0f / MACHINE_ENC_CNT_PER_ROT  * PI / dt ;
+  enc_right_omega = (float)enc->right  * 2.0f / MACHINE_ENC_CNT_PER_ROT  * PI / dt;
 
   left->velocity =  enc_left_omega / dt * MACHINE_WHEEL_RADIUS;
   right->velocity = enc_right_omega / dt * MACHINE_WHEEL_RADIUS;

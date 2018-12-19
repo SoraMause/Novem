@@ -69,8 +69,7 @@ extern t_fastpath fast_path[256];
 
 int8_t agentGetShortRoute( uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_scale, float *all_time, uint8_t method, uint8_t outflag, uint8_t boost );
 void agentSetShortRoute( uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_scale, uint8_t outflag, uint8_t boost );
-int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t out_flag );
-int8_t agentDijkstraRouteMax( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale );
+int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t out_flag );
 
 #endif /* __AGENT_H */
 
