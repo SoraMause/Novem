@@ -151,7 +151,7 @@ void removeWestWall( uint8_t x, uint8_t y, t_walldata *wall )
 void addWall( t_position *pos ,t_walldata *wall )
 {
   // 探索済みでない場合壁情報の更新を行う。
-  if ( searchCompartment( pos->x, pos->y, wall ) == 0 ){
+  //if ( searchCompartment( pos->x, pos->y, wall ) == 0 ){
     // 方向が北向きのとき
     if ( pos->direction == North ){
       // 西壁
@@ -234,7 +234,7 @@ void addWall( t_position *pos ,t_walldata *wall )
       }    
     }
   }
-}
+//}
 
 /**
  * 探索済みでどうか知らせる関数

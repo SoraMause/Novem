@@ -87,6 +87,8 @@ void adachiSearchRun( int8_t gx, int8_t gy, t_normal_param *translation, t_norma
   mypos.direction = (mypos.direction + 2) % 4;
   buzzerSetMonophonic( NORMAL, 200 );
   waitMotion( 300 );
+  buzzerSetMonophonic( NORMAL, 200 );
+  waitMotion( 300 );
 }
 
 void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_normal_param *rotation, t_walldata *wall, t_walldata *bit, t_position *pos, uint8_t maze_scale )
@@ -155,7 +157,7 @@ void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_
 
 void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
 {
-  while( motion_last < motion_end ){
+  while( motion_queue[motion_last] != 0 ){
     switch( motion_queue[motion_last] ){
       case SET_STRAIGHT:
         sidewall_control_flag = 1;  // 壁制御有効
@@ -201,7 +203,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   setControlFlag( 1 );
   #endif
 
-  while( motion_last < motion_end ){
+  while( motion_queue[motion_last] != 0 ){
     switch( motion_queue[motion_last] ){
       case SET_STRAIGHT:
         sidewall_control_flag = 1;  // 壁制御有効
@@ -210,7 +212,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         break;
 
       case SET_DIA_STRAIGHT:
-        dirwall_control_flag = 1;
+        //dirwall_control_flag = 1;
         runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
                     fast_path[motion_last].speed, fast_path[motion_last].end_speed );
         dirwall_control_flag = 0;

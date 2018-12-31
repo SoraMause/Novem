@@ -13,8 +13,6 @@ void fast_path_init( void )
     fast_path[i].start_speed = 0.0f;
     fast_path[i].distance = 0.0f;
   }
-  motion_end = 0;
-  motion_last = 0;
 }
 
 
@@ -665,11 +663,13 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
       fast_path[i].distance = motion_data[i] * ONE_BLOCK_DISTANCE;
       // to do 距離によって変更
       
-      if ( fast_path[i].distance >= 6.0f * ONE_BLOCK_DISTANCE ) {
+      if ( fast_path[i].distance > 10.0f * ONE_BLOCK_DISTANCE ) {
          fast_path[i].speed = 2000.0f; 
-      } else if ( fast_path[i].distance >= 4.0f * ONE_BLOCK_DISTANCE ) {
+      } else if ( fast_path[i].distance > 7.0f * ONE_BLOCK_DISTANCE ) {
          fast_path[i].speed = 1700.0f;
-      } else if ( fast_path[i].distance >= 2.0f * ONE_BLOCK_DISTANCE ){
+      } else if ( fast_path[i].distance > 4.0f * ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1500.0f;
+      } else if ( fast_path[i].distance > 1.0f * ONE_BLOCK_DISTANCE ){
         fast_path[i].speed = 1200.0f;
       } else {
         fast_path[i].speed = 700.0f;
@@ -692,6 +692,7 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     // 次の動作をEND_MOTIONから直線30mm 停止へ
     motion_buff[cnt_motion-1] = front;
     fast_path[cnt_motion-1].distance = 30.0f;
+    fast_path[cnt_motion-1].speed = 100.0f;
     fast_path[cnt_motion-1].start_speed = 700.0f;
     fast_path[cnt_motion-1].end_speed = 0.0f;
     // 壁制御を有効なストレートモードを作成すること
@@ -705,10 +706,24 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     motion_queue[cnt_motion] = END_MOTION;
     cnt_motion++;
   } else {
-    motion_queue[cnt_motion-1] = FRONTPD_DELAY;
-    motion_buff[cnt_motion-1] = end_maze;
-    motion_queue[cnt_motion] = END_MOTION;
+    // 終了速度を低速のまま
+    fast_path[cnt_motion-2].end_speed = 700.0f;
+    fast_path[cnt_motion-2].distance -= 180.0f;
+    // 次の動作をEND_MOTIONから直線30mm 停止へ
+    motion_buff[cnt_motion-1] = front;
+    fast_path[cnt_motion-1].distance = 180.0f;
+    fast_path[cnt_motion-1].speed = 300.0f;
+    fast_path[cnt_motion-1].start_speed = 700.0f;
+    fast_path[cnt_motion-1].end_speed = 0.0f;
+    // 壁制御を有効なストレートモードを作成すること
+    motion_queue[cnt_motion-1] = SET_STRAIGHT;
+    // delay
     motion_buff[cnt_motion] = end_maze;
+    motion_queue[cnt_motion] = FRONTPD_DELAY;
+    cnt_motion++;
+    // cnt_motionにEND_MOTIONを入れてその後
+    motion_buff[cnt_motion] = end_maze;
+    motion_queue[cnt_motion] = END_MOTION;
     cnt_motion++;
   }
 
@@ -810,6 +825,7 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     }
   }
 
+  motion_last = 0;
   motion_end = cnt_motion-1; // 最後のカウンタの値を保存しておく
 
   return 1;

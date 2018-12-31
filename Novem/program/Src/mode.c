@@ -96,15 +96,16 @@ void mode_init( void )
 	rotation_trape_param.back_rightturn_flag = 0;
 	rotation_deviation.cumulative = 0.0;
   // to do search param と fast paramで分けれるようにする
-  setSlaromOffset( &slarom500, 19.5f, 21.5f, 19.5f, 21.5f, 7200.0f, 600.0f );
+  setSlaromOffset( &slarom500, 19.0f, 21.0f, 19.0f, 21.0f, 7200.0f, 600.0f );
 
   setPIDGain( &translation_gain, 1.5f, 30.0f, 0.0f );  
-  setPIDGain( &rotation_gain, 0.40f, 60.0f, 0.0f ); 
+  setPIDGain( &rotation_gain, 0.45f, 45.0f, 0.0f ); 
 
   // sensor 値設定
-  setSensorConstant( &sen_front, 550, 140 );
-  setSensorConstant( &sen_l, 255, 160 );
-  setSensorConstant( &sen_r, 260, 180 );
+  setSensorConstant( &sen_front, 600, 160 );
+  // 区画中心　前壁 195
+  setSensorConstant( &sen_l, 340, 220 );
+  setSensorConstant( &sen_r, 265, 180 );
 
   certainLedOut( LED_FRONT );
   waitMotion( 100 );
@@ -140,6 +141,8 @@ void startAction( void )
 
 void writeFlashData( t_walldata *wall )
 {
+  certainLedOut( 0x01 );
+  fullColorLedOut( 0x00 );
   wall->save = 1;
 
   for ( int i = 0; i <= MAZE_HALF_MAX_SIZE; i++ ){
@@ -158,8 +161,8 @@ void loadWallData( t_walldata *wall )
 // 足立法探索
 void mode0( void )
 {
-  setNormalRunParam( &run_param, 4000.0f, 500.0f );       // 加速度、探索速度指定
-  setNormalRunParam( &rotation_param, 5400.0f, 450.0f );  // 角加速度、角速度指定
+  setNormalRunParam( &run_param, 8000.0f, 500.0f );       // 加速度、探索速度指定
+  setNormalRunParam( &rotation_param, 6300.0f, 540.0f );  // 角加速度、角速度指定
   wall_Init( &wall_data, MAZE_CLASSIC_SIZE );
   wallBIt_Init( &wall_bit, MAZE_CLASSIC_SIZE );
   setMazeGoalSize( maze_goal_size );
@@ -171,14 +174,13 @@ void mode0( void )
   adcEnd();
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
-  //setVirtualGoal( MAZE_CLASSIC_SIZE, &wall_data );
   adcStart();
   setControlFlag( 1 );
   adachiSearchRun( 0, 0, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );
   adcEnd();
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
-
+  
 }
 
 // 足立法最短(斜めなし)
@@ -217,7 +219,6 @@ void mode2( void )
 
 }
 
-
 // 各種センサー値確認,最短パスチェック
 void mode3( void )
 {
@@ -233,17 +234,58 @@ void mode3( void )
   if ( wall_data.save == 1 ){
     agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 0 );
     agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 1 );
-    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 1 );
   }
   
 }
 
-// fun check
+// knwon search
 void mode4( void )
 {
-  funControl( FUN_ON );
-  waitMotion( 5000 );
-  funControl( FUN_OFF );
+  setNormalRunParam( &run_param, 8000.0f, 500.0f );       // 加速度、探索速度指定
+  setNormalRunParam( &rotation_param, 6300.0f, 540.0f );  // 角加速度、角速度指定
+  wall_Init( &wall_data, MAZE_CLASSIC_SIZE );
+  wallBIt_Init( &wall_bit, MAZE_CLASSIC_SIZE );
+  setMazeGoalSize( maze_goal_size );
+  positionReset( &mypos );
+
+  startAction();
+
+  adachiSearchRunKnown( goal_x, goal_y, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );
+  adcEnd();
+  setControlFlag( 0 );
+  writeFlashData( &wall_bit );
+  setVirtualGoal( MAZE_CLASSIC_SIZE, &wall_data );
+  adcStart();
+  setControlFlag( 1 );
+  adachiSearchRunKnown( 0, 0, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );
+  adcEnd();
+  setControlFlag( 0 );
+  writeFlashData( &wall_bit );
+
+  setNormalRunParam( &run_param, 8000.0f, 500.0f );       // 加速度、速度指定
+  setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
+
+  loadWallData( &wall_data );
+  
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0 ) == 0 ){
+    return;
+  }
+
+  positionReset( &mypos );
+
+  buzzerSetMonophonic( C_H_SCALE, 100 );
+  HAL_Delay( 110 );
+  buzzerSetMonophonic( C_H_SCALE, 100 );
+  HAL_Delay( 110 );
+
+  MPU6500_z_axis_offset_calc_start();
+  while( MPU6500_calc_check() ==  0 );
+  adcStart();
+  waitMotion( 100 );
+  
+  setControlFlag( 1 );
+
+  adachiFastRunDiagonal( &run_param, &rotation_param );
 }
 
 // 直進、超進地チェック
@@ -285,8 +327,9 @@ void mode7( void )
   HAL_Delay(300); 
   startAction();
   adjFront( 4000.0, 500.0f );
-  slaromLeft( 500.0f );
-  straightHalfBlockStop( 4000.0f, 500.0f );
+  slaromRight( 500.0f );
+  runStraight( 4000.0f, 90.0f, 500.0f, 500.0f, 0.0f );
+  //straightHalfBlockStop( 4000.0f, 500.0f );
 }
 
 // 直進、回転組み合わせチェック 超進地旋回

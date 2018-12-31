@@ -18,4 +18,6 @@ void waitRotation( void );
 
 void waitMotion( volatile int32_t wait_time );
 
+void waitSlaromOut( void );
+
 #endif /* __RUN_H */

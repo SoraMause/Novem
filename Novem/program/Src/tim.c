@@ -545,6 +545,14 @@ void motorControl( int32_t pwm_l , int32_t pwm_r )
     HAL_GPIO_WritePin( IN2_R_GPIO_Port, IN2_R_Pin, GPIO_PIN_SET );
   }
 
+  if ( pwm_l_buff > 400 ){
+    pwm_l_buff = 399;
+  }
+
+  if ( pwm_r_buff > 400 ){
+    pwm_r_buff = 399;
+  }
+
   // set duty
   sConfigOC.Pulse = pwm_l_buff; 
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK){
