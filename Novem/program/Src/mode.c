@@ -203,7 +203,7 @@ void mode1( void )
 // 足立法最短( 斜めあり )
 void mode2( void )
 {
-  setNormalRunParam( &run_param, 8000.0f, 700.0f );       // 加速度、速度指定
+  setNormalRunParam( &run_param, 10000.0f, 1000.0f );       // 加速度、速度指定
   setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
 
   loadWallData( &wall_data );
@@ -262,7 +262,7 @@ void mode4( void )
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
 
-  setNormalRunParam( &run_param, 8000.0f, 500.0f );       // 加速度、速度指定
+  setNormalRunParam( &run_param, 12000.0f, 500.0f );       // 加速度、速度指定
   setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
 
   loadWallData( &wall_data );

@@ -119,24 +119,24 @@ void runStraight( float accel , float distance, float start_vel, float run_vel, 
 void slaromCenterLeft( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 75.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 18.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 90.0f, 6740.0f, 540.0f, 700.0f );
+  setRotation( 90.0f, 6300.0f, 500.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 75.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 28.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromCenterRight( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 75.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 18.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -90.0f, 6740.0f, 540.0f, 700.0f );
+  setRotation( -90.0f, 6300.0f, 500.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 75.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 28.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
@@ -144,24 +144,24 @@ void slaromCenterRight( void )
 void slaromCenterLeft180( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 42.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 30.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 180.0f, 6300.0f, 450.0f, 700.0f );
+  setRotation( 180.0f, 8100.0f, 660.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 40.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 47.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromCenterRight180( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 42.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 30.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -180.0f, 6300.0f, 450.0f, 700.0f );
+  setRotation( -180.0f, 8100.0f, 660.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 40.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 47.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
@@ -169,22 +169,22 @@ void slaromCenterRight180( void )
 void slaromCenterLeft45( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 44.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 11.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 45.0f, 12000.0f, 630.0f, 700.0f );
+  setRotation( 45.0f, 9000.0f, 630.0f, 1000.0f );
   waitRotation();
-  setStraight( 81.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 60.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromCenterRight45( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 44.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 11.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -45.0f, 12000.0f, 630.0f, 700.0f );
+  setRotation( -45.0f, 9000.0f, 630.0f, 1000.0f );
   waitRotation();
-  setStraight( 81.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 60.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
@@ -192,88 +192,88 @@ void slaromCenterRight45( void )
 void slaromCenterLeft135( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 50.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 15.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 135.0f, 5400.0f, 540.0f, 700.0f );
+  setRotation( 135.0f, 8100.0f, 700.0f, 1000.0f );
   waitRotation();
-  setStraight( 32.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 15.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromCenterRight135( void )
 {
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 50.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 15.0f, 10000.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -135.0f, 5400.0f, 540.0f, 700.0f );
+  setRotation( -135.0f, 8100.0f, 700.0f, 1000.0f );
   waitRotation();
-  setStraight( 32.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 15.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 // 斜め90度 ( V90 )
 void slaromLeftV90( void )
 {
-  setStraight( 26.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 3.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 90.0f, 6300.0f, 630.0f, 700.0f );
+  setRotation( 90.0f, 9000.0f, 900.0f, 1000.0f );
   waitRotation();
-  setStraight( 25.0f, 0.0f, 700.0f, 700.0f, 700.0f );
-  waitStraight();  
+  setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+  waitStraight();    
 }
 
 void slaromRightV90( void )
 {
-  setStraight( 26.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 3.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -90.0f, 6300.0f, 630.0f, 700.0f );
+  setRotation( -90.0f, 9000.0f, 900.0f, 1000.0f );
   waitRotation();
-  setStraight( 25.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();    
 }
 
 // 斜めから復帰
 void slaromReturnDiaLeft45( void )
 {
-  setStraight( 78.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 37.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 45.0f, 10000.0f, 630.0f, 700.0f );
+  setRotation( 45.0f, 7200.0f, 450.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 39.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 11.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromReturnDiaRight45( void )
 {
-  setStraight( 78.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 37.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -45.0f, 10000.0f, 630.0f, 700.0f );
+  setRotation( -45.0f, 7200.0f, 450.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 39.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 11.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 // 斜めから135度ターン復帰
 void slaromReturnDiaLeft135( void )
 {
-  setStraight( 54.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 1.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( 135.0f, 5760.0f, 630.0f, 700.0f );
+  setRotation( 135.0f, 8100.0f, 720.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 67.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 29.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }
 
 void slaromReturnDiaRight135( void )
 {
-  setStraight( 54.0f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 1.5f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
-  setRotation( -135.0f, 5760.0f, 630.0f, 700.0f );
+  setRotation( -135.0f, 8100.0f, 720.0f, 1000.0f );
   waitRotation();
   sidewall_control_flag = 1;    // 壁制御有効
-  setStraight( 67.5f, 0.0f, 700.0f, 700.0f, 700.0f );
+  setStraight( 29.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
   waitStraight();
 }

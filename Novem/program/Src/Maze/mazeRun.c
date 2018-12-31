@@ -196,13 +196,12 @@ void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
 
 void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
 {
-  #if 0
-  setControlFlag( 0 );
-  funControl( FUN_ON );
-  HAL_Delay( 1000 );
-  setControlFlag( 1 );
-  #endif
-
+  
+  //setControlFlag( 0 );
+  //funControl( FUN_ON );
+  //waitMotion( 1000 );
+  //setControlFlag( 1 );
+  
   while( motion_queue[motion_last] != 0 ){
     switch( motion_queue[motion_last] ){
       case SET_STRAIGHT:
@@ -304,6 +303,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   }
 
   buzzerSetMonophonic( NORMAL, 200 );
+  funControl( FUN_OFF );
   setControlFlag( 0 );
   waitMotion( 300 );
 }
