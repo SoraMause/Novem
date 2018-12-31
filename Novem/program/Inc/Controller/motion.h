@@ -12,6 +12,7 @@ void adjFront( float accel, float run_vel );
 void adjBack( void );
 void straightOneBlock( float run_vel );
 void straightHalfBlockStop( float accel , float run_vel );
+void straightHalfBlockStart( float accel , float run_vel );
 
 void pivoTurnLeft( float accel, float run_vel );
 void pivoTurnRight( float accel, float run_vel );

@@ -87,7 +87,7 @@ void interrupt( void )
     PIDControl( &translation_ideal, &left_real, &right_real, &run_left_deviation, &run_right_deviation,
             &translation_gain, &translation_trape_param, &duty, 0 );
 
-    if ( translation_trape_param.back_rightturn_flag == 0 || translation_ideal.velocity > 100.0f || wait_flag == 0 ){
+    if ( translation_trape_param.back_rightturn_flag == 0 || translation_ideal.velocity > 100.0f ){
       PIDControl( &rotation_ideal, &rotation_real, &rotation_real, &rotation_deviation, &rotation_deviation, &rotation_gain,
                   &rotation_trape_param, &duty, 1 );
     }  

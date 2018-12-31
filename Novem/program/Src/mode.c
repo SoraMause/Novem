@@ -96,15 +96,15 @@ void mode_init( void )
 	rotation_trape_param.back_rightturn_flag = 0;
 	rotation_deviation.cumulative = 0.0;
   // to do search param と fast paramで分けれるようにする
-  setSlaromOffset( &slarom500, 21.0f, 20.0f, 21.0f, 21.5f, 7200.0f, 630.0f );
+  setSlaromOffset( &slarom500, 19.5f, 21.5f, 19.5f, 21.5f, 7200.0f, 600.0f );
 
   setPIDGain( &translation_gain, 1.5f, 30.0f, 0.0f );  
-  setPIDGain( &rotation_gain, 0.45f, 50.0f, 0.0f ); 
+  setPIDGain( &rotation_gain, 0.40f, 60.0f, 0.0f ); 
 
   // sensor 値設定
-  setSensorConstant( &sen_front, 730, 380 );
-  setSensorConstant( &sen_l, 540, 400 );
-  setSensorConstant( &sen_r, 630, 510 );
+  setSensorConstant( &sen_front, 550, 140 );
+  setSensorConstant( &sen_l, 255, 160 );
+  setSensorConstant( &sen_r, 260, 180 );
 
   certainLedOut( LED_FRONT );
   waitMotion( 100 );
@@ -171,7 +171,7 @@ void mode0( void )
   adcEnd();
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
-  setVirtualGoal( MAZE_CLASSIC_SIZE, &wall_data );
+  //setVirtualGoal( MAZE_CLASSIC_SIZE, &wall_data );
   adcStart();
   setControlFlag( 1 );
   adachiSearchRun( 0, 0, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );

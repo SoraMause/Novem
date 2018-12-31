@@ -44,7 +44,6 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
@@ -118,8 +117,6 @@ extern SPI_HandleTypeDef hspi3;
 // ã‚¸ãƒ£ã‚¤ãƒ­ã�?®ã‚²ã‚¤ãƒ³ã�?Œãƒ�?�ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã�?§2000dpsã�?®æ™‚ï¿½????¿½?¿½??¿½?¿½å€¤
 #define GYRO_FACTOR  16.4f
 /* USER CODE END Private defines */
-
-extern void _Error_Handler(char *, int);
 
 void MX_SPI3_Init(void);
 

@@ -52,6 +52,15 @@ void straightHalfBlockStop( float accel , float run_vel )
   waitMotion( 300 );
 }
 
+void straightHalfBlockStart( float accel , float run_vel )
+{
+  sidewall_control_flag = 1;    // 壁制御有効
+  frontwall_control_flag = 1;
+  setStraight( 90.0f, accel, run_vel, 0.0f, run_vel );
+  waitStraight(); 
+  waitMotion( 300 );
+}
+
 void pivoTurnLeft( float accel, float run_vel )
 {
   setRotation( 90.0f, accel, run_vel, 0.0f );

@@ -44,7 +44,6 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
@@ -61,8 +60,6 @@ extern TIM_HandleTypeDef htim8;
 #define FUN_ON 1
 #define FUN_OFF 0
 /* USER CODE END Private defines */
-
-extern void _Error_Handler(char *, int);
 
 void MX_TIM1_Init(void);
 void MX_TIM2_Init(void);

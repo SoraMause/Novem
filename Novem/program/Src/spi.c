@@ -40,8 +40,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "spi.h"
 
-#include "gpio.h"
-
 /* USER CODE BEGIN 0 */
 static int16_t gyro_offset_cnt = 0; 
 static int8_t  gyro_calc_flag = 1;
@@ -68,7 +66,7 @@ void MX_SPI3_Init(void)
   hspi3.Init.CRCPolynomial = 10;
   if (HAL_SPI_Init(&hspi3) != HAL_OK)
   {
-    _Error_Handler(__FILE__, __LINE__);
+    Error_Handler();
   }
 
 }
@@ -76,7 +74,7 @@ void MX_SPI3_Init(void)
 void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(spiHandle->Instance==SPI3)
   {
   /* USER CODE BEGIN SPI3_MspInit 0 */
@@ -85,6 +83,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
     /* SPI3 clock enable */
     __HAL_RCC_SPI3_CLK_ENABLE();
   
+    __HAL_RCC_GPIOC_CLK_ENABLE();
     /**SPI3 GPIO Configuration    
     PC10     ------> SPI3_SCK
     PC11     ------> SPI3_MISO
@@ -298,13 +297,5 @@ float checkGyroOffset()
   return gyro_z_offset;
 }
 /* USER CODE END 1 */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

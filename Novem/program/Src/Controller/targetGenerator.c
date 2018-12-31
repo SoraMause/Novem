@@ -85,11 +85,11 @@ void sideWallControl( void )
   // 横壁制御フラグが1のときのみ制御を行う
   if ( sidewall_control_flag == 1 && (sen_l.diff < 20) && (sen_r.diff < 20) && (translation_ideal.velocity > 300.0f) ){
     if ( sen_l.is_wall == 1 && sen_r.is_wall == 1 ){
-      sidewall_control_value = (float)0.3f * ( ( sen_l.now - sen_l.reference ) - ( sen_r.now - sen_r.reference ) );
+      sidewall_control_value = (float)0.5f * ( ( sen_l.now - sen_l.reference ) - ( sen_r.now - sen_r.reference ) );
     } else if ( sen_l.is_wall == 1 && sen_r.is_wall == 0 ){
-      sidewall_control_value = (float)0.3f * ( sen_l.now - sen_l.reference );
+      sidewall_control_value = (float)1.0f * ( sen_l.now - sen_l.reference );
     } else if( sen_r.is_wall == 1 && sen_l.is_wall == 0 ){
-      sidewall_control_value = (float)-0.3f * ( sen_r.now - sen_r.reference );
+      sidewall_control_value = (float)-1.0f * ( sen_r.now - sen_r.reference );
     } else {
       sidewall_control_value = 0.0f;
     }
@@ -104,8 +104,8 @@ void frontWallControl( void )
   // 前壁については普通にゲイン調整して合わせること。
   // 前壁制御フラグが1のときのみ制御を行う
   // 665
-  if ( frontwall_control_flag == 1 && sen_front.now > 550 && right_real.velocity < 200.0f ){
-    frontwall_control_value = (float) 0.7f * (sen_front.now - sen_front.reference);
+  if ( frontwall_control_flag == 1 && sen_front.now > 400 && right_real.velocity < 200.0f ){
+    frontwall_control_value = (float) 1.0f * (sen_front.now - sen_front.reference);
   } else {
     frontwall_control_value = 0.0f;
   }

@@ -72,8 +72,8 @@ void wallBIt_Init(t_walldata *wall, uint8_t maze_scale)
 	for (int i = 0; i <= maze_scale; i++) {
 		wall->column[i] = 0xffffffff;
 		wall->row[i] = 0xffffffff;
-		wall->row_known[i] = 0xffffffff;
-		wall->column_known[i] = 0xffffffff;
+		wall->row_known[i] = 0x00;
+		wall->column_known[i] = 0x00;
 	}
 	wall->row[1] = 0xfffffffe;
 }
