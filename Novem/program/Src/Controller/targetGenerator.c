@@ -85,25 +85,25 @@ void sideWallControl( void )
   // 横壁制御フラグが1のときのみ制御を行う
   float sen_error = 0.0f;
 
-  if ( sidewall_control_flag == 1 && (sen_l.diff < 15) && (sen_r.diff < 15) && (translation_ideal.velocity > 300.0f) ){
+  if ( sidewall_control_flag == 1 && (sen_l.diff < 10) && (sen_r.diff < 10) && (translation_ideal.velocity > 300.0f) ){
     if ( sen_l.is_wall == 1 && sen_r.is_wall == 1 ){
       sen_error = (float)( ( sen_l.now - sen_l.reference ) - ( sen_r.now - sen_r.reference ) );
       if ( sen_error > 100.0f ){
         sen_error = 100.0f;
       }
-      sidewall_control_value = 0.2f * sen_error;
+      sidewall_control_value = sensor_gain.kp * sen_error;
     } else if ( sen_l.is_wall == 1 && sen_r.is_wall == 0 ){
       sen_error = (float)( sen_l.now - sen_l.reference );
       if ( sen_error > 100.0f ){
         sen_error = 100.0f;
       }
-      sidewall_control_value = 0.4f * sen_error;
+      sidewall_control_value = 2.0f * sensor_gain.kp * sen_error;
     } else if( sen_r.is_wall == 1 && sen_l.is_wall == 0 ){
       sen_error = (float)( sen_r.now - sen_r.reference );
       if ( sen_error > 100.0f ){
         sen_error = 100.0f;
       }
-      sidewall_control_value = -0.4f * sen_error;
+      sidewall_control_value = -2.0f * sensor_gain.kp * sen_error;
     } else {
       sidewall_control_value = 0.0f;
     }

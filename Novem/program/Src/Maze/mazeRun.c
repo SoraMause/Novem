@@ -197,20 +197,24 @@ void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
 void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
 {
   
-  //setControlFlag( 0 );
-  //funControl( FUN_ON );
-  //waitMotion( 1000 );
-  //setControlFlag( 1 );
+  setControlFlag( 0 );
+  funControl( FUN_ON );
+  waitMotion( 1000 );
+  setControlFlag( 1 );
   
   while( motion_queue[motion_last] != 0 ){
     switch( motion_queue[motion_last] ){
       case SET_STRAIGHT:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( LED_OFF );
         sidewall_control_flag = 1;  // 壁制御有効
         runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
                     fast_path[motion_last].speed, fast_path[motion_last].end_speed );
         break;
 
       case SET_DIA_STRAIGHT:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x01 );
         //dirwall_control_flag = 1;
         runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
                     fast_path[motion_last].speed, fast_path[motion_last].end_speed );
@@ -219,69 +223,98 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
 
       // 中心から90度
       case CENRTER_SLAROM_LEFT:
+        fullColorLedOut( 0x01 );
+        certainLedOut( LED_OFF );
         slaromCenterLeft();
         break;
 
       case CENRTER_SLAROM_RIGHT:
+        fullColorLedOut( 0x01 );
+        certainLedOut( LED_OFF );
         slaromCenterRight();
         break;
 
       // 中心から180度
       case SLAROM_LEFT_180:
+        fullColorLedOut( 0x03 );
+        certainLedOut( LED_OFF );
         slaromCenterLeft180();
         break;
 
       case SLAROM_RIGHT_180:
+        fullColorLedOut( 0x03 );
+        certainLedOut( LED_OFF );
         slaromCenterRight180();
         break;
 
       // 中心から45度
       case DIA_CENTER_LEFT:
+        fullColorLedOut( 0x04 );
+        certainLedOut( LED_OFF );
         slaromCenterLeft45();
         break;
 
       case DIA_CENTER_RIGHT:
+        fullColorLedOut( 0x04 );
+        certainLedOut( LED_OFF );
         slaromCenterRight45();
         break;
 
       // 中心から135度
       case DIA_CENTER_LEFT_135:
+        fullColorLedOut( 0x05 );
+        certainLedOut( LED_OFF );
         slaromCenterLeft135();
         break;
 
       case DIA_CENTER_RIGHT_135:
+        fullColorLedOut( 0x05 );
+        certainLedOut( LED_OFF );
         slaromCenterRight135();
         break;
 
       // 斜め90度 ( V90 )
       case DIA_LEFT_TURN:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x03 );
         slaromLeftV90();
         break;
 
       case DIA_RIGHT_TURN:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x03 );
         slaromRightV90();
         break;
 
       // 斜めから復帰
       case RETURN_DIA_LEFT:
+        fullColorLedOut( 0x0f );
+        certainLedOut( LED_OFF );
         slaromReturnDiaLeft45();
         break;
 
       case RETURN_DIA_RIGHT:
+        fullColorLedOut( 0x0f );
+        certainLedOut( LED_OFF );
         slaromReturnDiaRight45();
         break;
 
       // 斜めから135度ターン復帰
       case RETURN_DIA_LEFT_135:
+      fullColorLedOut( 0x06 );
+        certainLedOut( LED_OFF );
         slaromReturnDiaLeft135();
         break;
 
       case RETURN_DIA_RIGHT_135:
+        fullColorLedOut( 0x06 );
+        certainLedOut( LED_OFF );
         slaromReturnDiaRight135();
         break;
 
       case FRONTPD_DELAY:
         // 前壁制御有効にする
+        frontwall_control_flag = 1;
         waitMotion( 100 );
         break;
 

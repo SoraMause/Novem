@@ -78,6 +78,12 @@ void mazeUpdateMap(uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_scale)
 	if (gx == 0 && gy == 0) {
 		tail = 0;
 		if (check_all_search_flag == 1) {
+			// 2019 add intial step
+			for (int x = 0; x < maze_scale; x++) {
+				for (int y = 0; y < maze_scale; y++) {
+					maze_step[x][y] = MAX_STEP;
+				}
+			}
 			maze_step[gx][gy] = 0;
 			distPositionList[0] = gx * 256 + gy;
 			tail = 1;
@@ -101,10 +107,13 @@ void mazeUpdateMap(uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_scale)
 
 			// ほぼすべて探索済みなら真のゴール座標を入力
 			// 2018 11/17 新たに追加
-			if (tail < 5) {
+			// 2019 1/7 add check_all_search_flag = 1
+			// 2019 1 / 7 change 5 > maze_scale 
+			if (tail < maze_scale) {
 				maze_step[gx][gy] = 0;
 				distPositionList[0] = gx * 256 + gy;
 				tail = 1;
+				check_all_search_flag = 1;
 			}
 		}
 	} else {
@@ -321,6 +330,11 @@ int8_t getNextDir(uint8_t direction, uint8_t x, uint8_t y, t_walldata *wall, uin
 			step = maze_step[x - b][y + a];
 		}
 	}
+
+	if (step == MAX_STEP) {
+		check_all_search_flag = 1;
+	}
+
 	return nextdir;
 }
 

@@ -20,6 +20,7 @@ t_slarom_parameter slarom500;  // 500 mm/sec のスラロームパラメータ
 // PID関連
 t_PID_param translation_gain;      // 速度ゲイン
 t_PID_param rotation_gain;         // 回転ゲイン
+t_PID_param sensor_gain;           // センサのゲイン
 t_deviation run_left_deviation;    // 直線の差分
 t_deviation run_right_deviation;   // 直線の差分
 t_deviation rotation_deviation;    // 回転の差分

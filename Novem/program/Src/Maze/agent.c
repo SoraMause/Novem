@@ -646,7 +646,7 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
   // 前壁制御で何とかすればいいのでは。
   fast_path[0].start_speed = 0.0f;
   fast_path[0].end_speed = 800.0f;
-  fast_path[0].speed = 800.0f;
+  fast_path[0].speed = 700.0f;
   fast_path[0].distance = 40.0f;
   for( i = 1; i < cnt_motion; i++ ){
     if ( i == cnt_motion -2 ){
@@ -712,11 +712,11 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     // 次の動作をEND_MOTIONから直線30mm 停止へ
     motion_buff[cnt_motion-1] = front;
     fast_path[cnt_motion-1].distance = 180.0f;
-    fast_path[cnt_motion-1].speed = 300.0f;
+    fast_path[cnt_motion-1].speed = 500.0f;
     fast_path[cnt_motion-1].start_speed = 1000.0f;
     fast_path[cnt_motion-1].end_speed = 0.0f;
     // 壁制御を有効なストレートモードを作成すること
-    motion_queue[cnt_motion-1] = SET_STRAIGHT;
+    motion_queue[cnt_motion-1] = SET_FRONT_PD_STRAIGHT;
     // delay
     motion_buff[cnt_motion] = end_maze;
     motion_queue[cnt_motion] = FRONTPD_DELAY;
