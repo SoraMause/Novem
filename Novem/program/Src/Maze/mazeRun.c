@@ -225,52 +225,52 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
       case CENRTER_SLAROM_LEFT:
         fullColorLedOut( 0x01 );
         certainLedOut( LED_OFF );
-        slaromCenterLeft();
+        slaromCenterLeft( translation->accel );
         break;
 
       case CENRTER_SLAROM_RIGHT:
         fullColorLedOut( 0x01 );
         certainLedOut( LED_OFF );
-        slaromCenterRight();
+        slaromCenterRight( translation->accel );
         break;
 
       // 中心から180度
       case SLAROM_LEFT_180:
         fullColorLedOut( 0x03 );
         certainLedOut( LED_OFF );
-        slaromCenterLeft180();
+        slaromCenterLeft180( translation->accel );
         break;
 
       case SLAROM_RIGHT_180:
         fullColorLedOut( 0x03 );
         certainLedOut( LED_OFF );
-        slaromCenterRight180();
+        slaromCenterRight180( translation->accel );
         break;
 
       // 中心から45度
       case DIA_CENTER_LEFT:
         fullColorLedOut( 0x04 );
         certainLedOut( LED_OFF );
-        slaromCenterLeft45();
+        slaromCenterLeft45( translation->accel );
         break;
 
       case DIA_CENTER_RIGHT:
         fullColorLedOut( 0x04 );
         certainLedOut( LED_OFF );
-        slaromCenterRight45();
+        slaromCenterRight45( translation->accel );
         break;
 
       // 中心から135度
       case DIA_CENTER_LEFT_135:
         fullColorLedOut( 0x05 );
         certainLedOut( LED_OFF );
-        slaromCenterLeft135();
+        slaromCenterLeft135( translation->accel );
         break;
 
       case DIA_CENTER_RIGHT_135:
         fullColorLedOut( 0x05 );
         certainLedOut( LED_OFF );
-        slaromCenterRight135();
+        slaromCenterRight135( translation->accel );
         break;
 
       // 斜め90度 ( V90 )
@@ -319,7 +319,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         break;
 
       case DELAY:
-        waitMotion( 100 );
+        waitMotion( 50 );
         break;
 
       case SET_FRONT_PD_STRAIGHT:
@@ -335,8 +335,8 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
     motion_last++;
   }
 
-  buzzerSetMonophonic( NORMAL, 200 );
   funControl( FUN_OFF );
+  buzzerSetMonophonic( NORMAL, 200 );
   setControlFlag( 0 );
   waitMotion( 300 );
 }

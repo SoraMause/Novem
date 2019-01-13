@@ -154,7 +154,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    printf( "gyro z %f\r",rotation_real.velocity );
+    printf( "gyro z%f\r\n",rotation_real.velocity );
 
     if( mode_counter == 0 ){
       certainLedOut( LED_REAR );

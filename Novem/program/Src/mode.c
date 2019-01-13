@@ -163,7 +163,7 @@ void loadWallData( t_walldata *wall )
 void mode0( void )
 {
   setNormalRunParam( &run_param, 4000.0f, 500.0f );       // 加速度、探索速度指定
-  setNormalRunParam( &rotation_param, 5400.0f, 450.0f );  // 角加速度、角速度指定
+  setNormalRunParam( &rotation_param, 6300.0f, 540.0f );  // 角加速度、角速度指定
   wall_Init( &wall_data, MAZE_CLASSIC_SIZE );
   wallBIt_Init( &wall_bit, MAZE_CLASSIC_SIZE );
   setMazeGoalSize( maze_goal_size );
@@ -188,7 +188,7 @@ void mode0( void )
 void mode1( void )
 {
   setNormalRunParam( &run_param, 8000.0f, 500.0f );       // 加速度、速度指定
-  setNormalRunParam( &rotation_param, 5400.0f, 450.0f );  // 角加速度、角速度指定
+  setNormalRunParam( &rotation_param, 6300.0f, 540.0f );  // 角加速度、角速度指定
 
   loadWallData( &wall_data );
   agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0 );
@@ -204,7 +204,7 @@ void mode1( void )
 // 足立法最短( 斜めあり )
 void mode2( void )
 {
-  setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
+  setNormalRunParam( &run_param, 10000.0f, 1000.0f );       // 加速度、速度指定
   setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
 
   setPIDGain( &sensor_gain, 0.1f, 0.0f, 0.0f );           // センサのゲイン調整(横壁)
@@ -311,10 +311,10 @@ void mode5( void )
 void mode6( void )
 {
   startAction();
-  setRotation( 180.0f, 3600.0f, 360.0f, 0.0f );
+  setRotation( 180.0f, 6300.0f, 540.0f, 0.0f );
   waitRotation();
   waitMotion( 300 );
-  setRotation( 180.0f, 3600.0f, 360.0f, 0.0f );
+  setRotation( 180.0f, 6300.0f, 540.0f, 0.0f );
   waitRotation();
   setLogFlag( 0 );
   setControlFlag( 0 );
@@ -325,7 +325,7 @@ void mode6( void )
 // スラロームチェック
 void mode7( void )
 {
-
+  #if 0
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
@@ -333,6 +333,10 @@ void mode7( void )
   slaromRight( 500.0f );
   runStraight( 4000.0f, 90.0f, 500.0f, 500.0f, 0.0f );
   //straightHalfBlockStop( 4000.0f, 500.0f );
+  #endif
+  funControl( FUN_ON );
+  waitMotion( 3000 );
+  funControl( FUN_OFF );
 }
 
 // 直進、回転組み合わせチェック 超進地旋回

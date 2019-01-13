@@ -24,17 +24,17 @@ void slaromRight( float run_vel );
 // 最短用
 void runStraight( float accel , float distance, float start_vel, float run_vel, float end_vel );
 
-void slaromCenterLeft( void );
-void slaromCenterRight( void );
+void slaromCenterLeft( float accel );
+void slaromCenterRight( float accel );
 
-void slaromCenterLeft180( void );
-void slaromCenterRight180( void );
+void slaromCenterLeft180( float accel );
+void slaromCenterRight180( float accel );
 
-void slaromCenterLeft45( void );
-void slaromCenterRight45( void );
+void slaromCenterLeft45( float accel );
+void slaromCenterRight45( float accel );
 
-void slaromCenterLeft135( void );
-void slaromCenterRight135( void );
+void slaromCenterLeft135( float accel );
+void slaromCenterRight135( float accel );
 
 void slaromLeftV90( void );
 void slaromRightV90( void );

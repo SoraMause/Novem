@@ -708,10 +708,10 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
   } else {
     // 終了速度を低速のまま
     fast_path[cnt_motion-2].end_speed = 1000.0f;
-    fast_path[cnt_motion-2].distance -= 180.0f;
+    fast_path[cnt_motion-2].distance -= 90.0f;
     // 次の動作をEND_MOTIONから直線30mm 停止へ
     motion_buff[cnt_motion-1] = front;
-    fast_path[cnt_motion-1].distance = 180.0f;
+    fast_path[cnt_motion-1].distance = 90.0f;
     fast_path[cnt_motion-1].speed = 500.0f;
     fast_path[cnt_motion-1].start_speed = 1000.0f;
     fast_path[cnt_motion-1].end_speed = 0.0f;

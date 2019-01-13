@@ -111,9 +111,6 @@ void setRotation( float angle, float angular_accele, float max_angular_vel, floa
   translation_ideal.velocity = center_velocity;
   
   rotation_trape_param.run_flag = 1;
-
-  duty.left += 30;
-  duty.right += 30;
 }
 
 void waitRotation( void )
@@ -137,6 +134,8 @@ void waitMotion( volatile int32_t wait_time )
 {
   cnt_motion = 0;
   wait_flag= 1;
+  rotation_deviation.cumulative = 0.0f;
+
   while( cnt_motion < wait_time ){
     // 動作をしない
 

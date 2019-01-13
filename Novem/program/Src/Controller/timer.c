@@ -37,17 +37,12 @@ void interrupt( void )
     rotation_real.velocity = MPU6500_read_gyro_z();
     gyro_z_amountofchange = rotation_real.velocity - gyro_z_prev;
     gyro_z_prev = rotation_real.velocity;
+    accel_data = MPU6500_read_accel_x();
   }
 
-  //accel_data = MPU6500_read_accel_z();
-  accel_data = 0.0f;
-
   if ( control_flag == 1 ){  
-    if (( translation_ideal.velocity >= 300 && left_real.velocity < 100.0f && right_real.velocity < 100.0f ) 
-        || left_real.velocity > 4500.0f || right_real.velocity > 4500.0f || gyro_z_amountofchange > 500.0f || gyro_z_amountofchange < -500.0f ){
-      if ( translation_trape_param.back_rightturn_flag == 1 && rotation_trape_param.run_flag == 0 ){
-        failSafe_flag = 0;
-      } else {
+    if ( ( translation_trape_param.back_rightturn_flag == 0 && translation_ideal.velocity >= 300 && ( left_real.velocity < 100.0f || right_real.velocity < 100.0f ) )   
+        || gyro_z_amountofchange > 500.0f || gyro_z_amountofchange < -500.0f || ( translation_ideal.accel == 0.0f && (accel_data > 5.0f || accel_data< -5.0f) ) ){
         failsafe_count++;
         if ( failsafe_count > 5 ){
           failSafe_flag = 1;  
@@ -57,7 +52,6 @@ void interrupt( void )
           funControl( FUN_OFF );
           motorControl( 0, 0 );
         }
-      }
     } else {
       failsafe_count = 0;
     }

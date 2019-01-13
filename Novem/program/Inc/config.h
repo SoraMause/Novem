@@ -10,7 +10,7 @@
 // マシンのトレッド
 #define MACHINE_TREAD_WIDTH       0.060f
 // マシンの重さ
-#define MACHINE_WEIGHT            0.12f
+#define MACHINE_WEIGHT            0.115f
 // ギア比
 #define GEAR_RATION               3.5f // 42 / 10 = 4.2
 

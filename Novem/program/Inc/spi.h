@@ -53,7 +53,7 @@
 extern SPI_HandleTypeDef hspi3;
 
 /* USER CODE BEGIN Private defines */
-// MPU6500ã�?®ãƒ¬ã‚¸ã‚¹ã‚¿ãƒžãƒ�????¿½?¿½??¿½?¿½?
+// MPU6500ã�?®ãƒ¬ã‚¸ã‚¹ã‚¿ãƒžãƒ�????¿½?¿½??¿½?¿½?
 #define MPU6500_RA_SELF_TEST_X_GYRO	0x00
 #define MPU6500_RA_SELF_TEST_Y_GYRO	0x01
 #define MPU6500_RA_SELF_TEST_Z_GYRO	0x02
@@ -75,7 +75,7 @@ extern SPI_HandleTypeDef hspi3;
 #define MPU6500_RA_WOM_THR			0x1F
 #define MPU6500_RA_FIFO_EN			0x23
 // ...
-// å¤–éƒ¨I2Cå‘¨ã‚�?ï¿½????¿½?¿½??¿½?¿½çœ�?ç•¥
+// å¤–éƒ¨I2Cå‘¨ã‚�?ï¿½????¿½?¿½??¿½?¿½çœ�?ç•¥
 // ...
 #define MPU6500_RA_INT_PIN_CFG		0x37
 #define MPU6500_RA_INT_ENABLE		0x38
@@ -95,7 +95,7 @@ extern SPI_HandleTypeDef hspi3;
 #define MPU6500_RA_GYRO_ZOUT_H		0x47
 #define MPU6500_RA_GYRO_ZOUT_L		0x48
 // ...
-// å¤–éƒ¨I2Cå‘¨ã‚�?ï¿½????¿½?¿½??¿½?¿½çœ�?ç•¥
+// å¤–éƒ¨I2Cå‘¨ã‚�?ï¿½????¿½?¿½??¿½?¿½çœ�?ç•¥
 // ...
 #define MPU6500_RA_SIGNAL_PATH_RESET	0x68
 #define MPU6500_RA_MOT_DETECT_CTRL		0x69
@@ -114,8 +114,10 @@ extern SPI_HandleTypeDef hspi3;
 #define MPU6500_RA_ZA_OFFSET_L		0x7E
 
 #define MPU6500_DEVICE_ID			0x70
-// ã‚¸ãƒ£ã‚¤ãƒ­ã�?®ã‚²ã‚¤ãƒ³ã�?Œãƒ�?�ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã�?§2000dpsã�?®æ™‚ï¿½????¿½?¿½??¿½?¿½å€¤
+// ã‚¸ãƒ£ã‚¤ãƒ­ã�?®ã‚²ã‚¤ãƒ³ã�?Œãƒ�?�ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«ã�?§2000dpsã�?®æ™‚ï¿½????¿½?¿½??¿½?¿½å€¤
 #define GYRO_FACTOR  16.4f
+
+#define ACCEL_FACTOR 2048.0f
 /* USER CODE END Private defines */
 
 void MX_SPI3_Init(void);
@@ -130,6 +132,7 @@ void MPU6500_z_axis_offset_calc_start( void );
 void MPU6500_z_axis_offset_calc( void );
 int8_t MPU6500_calc_check( void );
 float checkGyroOffset( void );
+float MPU6500_read_accel_x( void );
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
