@@ -154,7 +154,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    printf( "gyro z%f\r\n",rotation_real.velocity );
+    printf( "gyro z%f, batt_voltage : %f\r",rotation_real.velocity, batt_monitor );
 
     if( mode_counter == 0 ){
       certainLedOut( LED_REAR );
@@ -184,6 +184,15 @@ int main(void)
 
     if ( getPushsw() ){
       modeSelect( mode_counter );
+    }
+
+    if ( batt_monitor < 7.0f ){
+      while( 1 ){
+        certainLedOut( 0xff );
+        waitMotion( 1000 );
+        certainLedOut( 0x00 );
+        waitMotion( 1000 );
+      }
     }
   }
   /* USER CODE END 3 */

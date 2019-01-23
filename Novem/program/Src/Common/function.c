@@ -38,9 +38,10 @@ void machine_init( void )
   HAL_Delay( 100 );
   HAL_TIM_Encoder_Start( &htim1, TIM_CHANNEL_ALL ); // encoder
   HAL_TIM_Encoder_Start( &htim8, TIM_CHANNEL_ALL ); // encoder
-  batt_calc_const = 3.3f / 4096.0f * ( 1000.0f + 390.0f ) / 390.0f;
+  batt_calc_const = 3.3f / 1024.0f * ( 2200.0f + 1000.0f ) / 1000.0f;
   mode_counter = 0;
   mode_distance = 0.0f;
+  adc_counter = FINISH_CONVERT;
   HAL_Delay( 300 );
   HAL_GPIO_WritePin( stby_GPIO_Port, stby_Pin, GPIO_PIN_SET );
 
@@ -53,11 +54,18 @@ void machine_init( void )
 // [Substitutiong] batt_voltage
 // [return] nothing
 ///////////////////////////////////////////////////////////////////////
-float battMonitor( int16_t data )
+float battMonitor( void )
 {
+  int16_t batt_analog = 0;
   float batt_voltage;
-  //batt_voltage = 3.3 * batt_analog / 1024.0;
-  batt_voltage = (float)( batt_calc_const * data );
+
+  HAL_ADC_Start( &hadc2 );
+  HAL_ADC_PollForConversion( &hadc2,100 );  // trans
+  batt_analog = HAL_ADC_GetValue( &hadc2 );   // get value
+  HAL_ADC_Stop( &hadc2 );
+  
+  batt_voltage = (float)( batt_calc_const * batt_analog );
+
   return batt_voltage;
 }
 
@@ -133,14 +141,18 @@ void adcStart( void )
 void adcEnd( void )
 {
   setIrledPwm( IRLED_OFF );
+  adc_counter = FINISH_CONVERT;
 }
 
 void adcCheckConvert( void )
 {
-  if ( adc_counter == FINISH_CONVERT && ctr_irled == 1 ){
-    update_sensor_data();
-    adc_counter = 0;
-    HAL_ADC_Start_DMA( &hadc1, (uint32_t *)ADCBuff, sizeof(ADCBuff) );
+  if ( adc_counter == FINISH_CONVERT ){
+    batt_monitor = battMonitor();
+    if ( ctr_irled == 1 ){
+      update_sensor_data();
+      adc_counter = 0;
+      HAL_ADC_Start_DMA( &hadc1, (uint32_t *)ADCBuff, sizeof(ADCBuff) );
+    }
   }
 }
 

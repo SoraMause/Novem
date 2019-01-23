@@ -12,7 +12,7 @@
 #define IRLED_OFF 0
 
 void machine_init( void );
-float battMonitor( int16_t data );
+float battMonitor( void );
 void setIrledPwm( uint8_t ired );
 
 void adcStart( void );

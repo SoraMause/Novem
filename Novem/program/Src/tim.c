@@ -407,12 +407,12 @@ void funControl( uint8_t fun_mode )
   int32_t pwm = 0;
 
   if ( fun_mode == FUN_ON ) {
-    pwm = 30;
+    pwm = 20;
   }
 
   if ( buzzer_period_buff != 7 ){
     htim2.Instance = TIM2;
-    htim2.Init.Prescaler = 3;
+    htim2.Init.Prescaler = 7;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
     htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
     if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)

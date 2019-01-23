@@ -109,7 +109,7 @@ void mazeUpdateMap(uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_scale)
 			// 2018 11/17 新たに追加
 			// 2019 1/7 add check_all_search_flag = 1
 			// 2019 1 / 7 change 5 > maze_scale 
-			if (tail < maze_scale) {
+			if (tail < 4) {
 				maze_step[gx][gy] = 0;
 				distPositionList[0] = gx * 256 + gy;
 				tail = 1;

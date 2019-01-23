@@ -76,7 +76,7 @@ void pivoTurnRight( float accel, float run_vel )
 
 void pivoTurn180( float accel, float run_vel )
 {
-  setRotation( -180.0f, accel, run_vel, 0.0f );
+  setRotation( 180.0f, accel, run_vel, 0.0f );
   waitRotation();
   waitMotion( 300 );
 }

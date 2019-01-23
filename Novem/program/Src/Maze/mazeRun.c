@@ -85,10 +85,9 @@ void adachiSearchRun( int8_t gx, int8_t gy, t_normal_param *translation, t_norma
   pivoTurn180( rotation->accel, rotation->velocity );
   adjBack();
   mypos.direction = (mypos.direction + 2) % 4;
-  buzzerSetMonophonic( NORMAL, 200 );
-  waitMotion( 300 );
-  buzzerSetMonophonic( NORMAL, 200 );
-  waitMotion( 300 );
+  setControlFlag( 0 );
+  buzzerSetMonophonic( C_H_SCALE, 100 );
+  waitMotion( 100 );
 }
 
 void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_normal_param *rotation, t_walldata *wall, t_walldata *bit, t_position *pos, uint8_t maze_scale )
@@ -145,14 +144,12 @@ void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_
   addWall( pos, wall );
   addWall( pos, bit ); 
   straightHalfBlockStop( translation->accel, translation->velocity );
-  waitMotion( 300 );
   pivoTurn180( rotation->accel, rotation->velocity );
   adjBack();
   mypos.direction = (mypos.direction + 2) % 4;
-  buzzerSetMonophonic( NORMAL, 200 );
-  waitMotion( 300 );
-  buzzerSetMonophonic( NORMAL, 200 );
-  waitMotion( 300 );
+  setControlFlag( 0 );
+  buzzerSetMonophonic( C_H_SCALE, 100 );
+  waitMotion( 100 );
 }
 
 void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
@@ -188,17 +185,16 @@ void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
     motion_last++;
   }
 
-  waitMotion( 300 );
-
-  buzzerSetMonophonic( NORMAL, 200 );
-  waitMotion( 300 );
+  waitMotion( 100 );
+  buzzerSetMonophonic( NORMAL, 100 );
+  waitMotion( 100 );
 }
 
 void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
 {
   
   setControlFlag( 0 );
-  funControl( FUN_ON );
+  //funControl( FUN_ON );
   waitMotion( 1000 );
   setControlFlag( 1 );
   
@@ -336,7 +332,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   }
 
   funControl( FUN_OFF );
-  buzzerSetMonophonic( NORMAL, 200 );
+  buzzerSetMonophonic( NORMAL, 100 );
   setControlFlag( 0 );
-  waitMotion( 300 );
+  waitMotion( 100 );
 }

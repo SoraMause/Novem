@@ -61,10 +61,7 @@ void MX_ADC1_Init(void);
 void MX_ADC2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-void updateBattAnalog( void );
-void update_sensorL_data( void );
-void update_left_sensorH( void );
-void update_right_sensorH( void );
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -176,7 +176,6 @@ extern t_position mypos;      // 座標
 //---------------------------------------------------------------------
 // 変数
 //---------------------------------------------------------------------
-extern int16_t batt_analog;  // batt analog 
 extern float batt_monitor;   // 電圧チェック
 
 extern int8_t mode_counter;  // modeのカウンタ

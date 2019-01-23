@@ -135,7 +135,7 @@ void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_15CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -258,13 +258,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-void updateBattAnalog( void )
-{
-  HAL_ADC_Start( &hadc2 );
-  HAL_ADC_PollForConversion( &hadc2,100 );  // trans
-  batt_analog = HAL_ADC_GetValue( &hadc2 );   // get value
-  HAL_ADC_Stop( &hadc2 );
-}
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

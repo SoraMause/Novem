@@ -134,6 +134,7 @@ void waitMotion( volatile int32_t wait_time )
 {
   cnt_motion = 0;
   wait_flag= 1;
+  
   rotation_deviation.cumulative = 0.0f;
 
   while( cnt_motion < wait_time ){
