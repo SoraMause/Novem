@@ -110,15 +110,15 @@ void sideWallControl( void )
   } else if ( dirwall_control_flag == 1 ){
     sidewall_control_value = 0.0f;
     // 4つのセンサのそれぞれの値の閾値を決めてそれに対して制御量を気持ち与える。
-    // fl 750 値の変化大きい l 830 値の変化小さい　r 830 値の変化大きい　fl 830 値の変化大きい
-    if ( sen_fl.now > 710 && sen_fl.diff < 30 ){
-      sidewall_control_value = (float)0.5f * ( sen_fl.now - 690 );
-    } else if ( sen_l.now > 800 && sen_l.diff_1ms < 30 ){
-      sidewall_control_value = (float)0.5f * ( sen_l.now - 790 );
-    } else if ( sen_fr.now > 800 && sen_fr.diff < 50 ){
-      sidewall_control_value = (float)-0.5f * ( sen_fr.now - 780 );
-    } else if ( sen_r.now > 800 && sen_r.diff_1ms < 50 ){
-      sidewall_control_value = (float)-0.5f * ( sen_r.now - 780 );
+    // 2019 1/25 fl: , l: , fr: , r:
+    if ( sen_fl.now > 170 && sen_fl.diff < 50 ){
+      sidewall_control_value = (float)0.6f * ( sen_fl.now - 120 );
+    } else if ( sen_l.now > 730 && sen_l.diff_1ms < 50 ){
+      sidewall_control_value = (float)0.6f * ( sen_l.now - 690 );
+    } else if ( sen_fr.now > 140 && sen_fr.diff < 50 ){
+      sidewall_control_value = (float)-0.6f * ( sen_fr.now - 90 );
+    } else if ( sen_r.now > 690 && sen_r.diff_1ms < 50 ){
+      sidewall_control_value = (float)-0.6f * ( sen_r.now - 650 );
     }
   } else {
     sidewall_control_value = 0.0f;
@@ -132,7 +132,7 @@ void frontWallControl( void )
   // 前壁制御フラグが1のときのみ制御を行う
   // 665
   if ( frontwall_control_flag == 1 && sen_front.is_wall == 1 && right_real.velocity < 200.0f ){
-    frontwall_control_value = (float) 1.5f * (sen_front.now - sen_front.reference);
+    frontwall_control_value = (float) 1.0f * (sen_front.now - sen_front.reference);
   } else {
     frontwall_control_value = 0.0f;
   }

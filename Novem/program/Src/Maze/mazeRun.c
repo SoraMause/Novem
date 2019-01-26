@@ -87,7 +87,7 @@ void adachiSearchRun( int8_t gx, int8_t gy, t_normal_param *translation, t_norma
   mypos.direction = (mypos.direction + 2) % 4;
   setControlFlag( 0 );
   buzzerSetMonophonic( C_H_SCALE, 100 );
-  waitMotion( 100 );
+  waitMotion( 150 );
 }
 
 void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_normal_param *rotation, t_walldata *wall, t_walldata *bit, t_position *pos, uint8_t maze_scale )
@@ -149,12 +149,12 @@ void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_
   mypos.direction = (mypos.direction + 2) % 4;
   setControlFlag( 0 );
   buzzerSetMonophonic( C_H_SCALE, 100 );
-  waitMotion( 100 );
+  waitMotion( 150 );
 }
 
 void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
 {
-  while( motion_queue[motion_last] != 0 ){
+  while( motion_queue[motion_last] != END ){
     switch( motion_queue[motion_last] ){
       case SET_STRAIGHT:
         sidewall_control_flag = 1;  // 壁制御有効
@@ -194,7 +194,251 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
 {
   
   setControlFlag( 0 );
-  //funControl( FUN_ON );
+  waitMotion( 1000 );
+  setControlFlag( 1 );
+  
+  while( motion_queue[motion_last] != END ){
+    switch( motion_queue[motion_last] ){
+      case SET_STRAIGHT:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;  // 壁制御有効
+        runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
+                    fast_path[motion_last].speed, fast_path[motion_last].end_speed );
+        break;
+
+      case SET_DIA_STRAIGHT:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x01 );
+        dirwall_control_flag = 1;
+        runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
+                    fast_path[motion_last].speed, fast_path[motion_last].end_speed );
+        dirwall_control_flag = 0;
+        break;
+
+      // 中心から90度
+      case CENRTER_SLAROM_LEFT:
+        fullColorLedOut( 0x01 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 31.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 90.0f, 7200.0f, 600.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 48.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case CENRTER_SLAROM_RIGHT:
+        fullColorLedOut( 0x01 );
+        certainLedOut( LED_BOTH );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 31.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -90.0f, 7200.0f, 600.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 48.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      // 中心から180度
+      case SLAROM_LEFT_180:
+        fullColorLedOut( 0x00 );
+        certainLedOut( LED_BOTH );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 30.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 180.0f, 8000.0f, 664.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 48.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case SLAROM_RIGHT_180:
+        fullColorLedOut( 0x06 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 30.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -180.0f, 8000.0f, 664.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 48.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      // 中心から45度
+      case DIA_CENTER_LEFT:
+        fullColorLedOut( 0x04 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 18.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 45.0f, 12000.0f, 700.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 71.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case DIA_CENTER_RIGHT:
+        fullColorLedOut( 0x04 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 18.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -45.0f, 12000.0f, 700.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 71.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      // 中心から135度
+      case DIA_CENTER_LEFT_135:
+        fullColorLedOut( 0x05 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 39.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 135.0f, 10000.0f, 800.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 47.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case DIA_CENTER_RIGHT_135:
+        fullColorLedOut( 0x05 );
+        certainLedOut( LED_OFF );
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 39.0f, translation->accel, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -135.0f, 10000.0f, 800.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 47.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      // 斜め90度 ( V90 )
+      case DIA_LEFT_TURN:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x02 );
+        dirwall_control_flag = 1;
+        setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 90.0f, 12000.0f, 960.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 38.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();  
+        break;
+
+      case DIA_RIGHT_TURN:
+        fullColorLedOut( LED_OFF );
+        certainLedOut( 0x02 );
+        dirwall_control_flag = 1;
+        setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -90.0f, 12000.0f, 960.0f, 1000.0f );
+        waitRotation();
+        dirwall_control_flag = 1;
+        setStraight( 38.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();    
+        break;
+
+      // 斜めから復帰
+      case RETURN_DIA_LEFT:
+        fullColorLedOut( 0x0f );
+        certainLedOut( LED_OFF );
+        dirwall_control_flag = 1;
+        setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 45.0f, 10000.0f, 500.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 27.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case RETURN_DIA_RIGHT:
+        fullColorLedOut( 0x0f );
+        certainLedOut( LED_OFF );
+        dirwall_control_flag = 1;
+        setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -45.0f, 10000.0f, 500.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 27.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      // 斜めから135度ターン復帰
+      case RETURN_DIA_LEFT_135:
+        fullColorLedOut( 0x06 );
+        certainLedOut( LED_OFF );
+        dirwall_control_flag = 1;
+        setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( 135.0f, 10000.0f, 800.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 62.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case RETURN_DIA_RIGHT_135:
+        fullColorLedOut( 0x06 );
+        certainLedOut( LED_OFF );
+        dirwall_control_flag = 1;
+        setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        setRotation( -135.0f, 10000.0f, 800.0f, 1000.0f );
+        waitRotation();
+        sidewall_control_flag = 1;    // 壁制御有効
+        setStraight( 62.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        waitStraight();
+        break;
+
+      case FRONTPD_DELAY:
+        // 前壁制御有効にする
+        frontwall_control_flag = 1;
+        waitMotion( 100 );
+        break;
+
+      case DELAY:
+        waitMotion( 50 );
+        break;
+
+      case SET_FRONT_PD_STRAIGHT:
+        // 前壁制御有効にする
+        frontwall_control_flag = 1;
+        runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
+                    fast_path[motion_last].speed, fast_path[motion_last].end_speed );        
+        break;
+
+      default:
+        break;
+    } // end switch 
+    motion_last++;
+  }
+
+  buzzerSetMonophonic( NORMAL, 100 );
+  setControlFlag( 0 );
+  waitMotion( 100 );
+}
+
+#if 0
+void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
+{
+  
+  setControlFlag( 0 );
+  funControl( FUN_ON );
   waitMotion( 1000 );
   setControlFlag( 1 );
   
@@ -211,7 +455,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
       case SET_DIA_STRAIGHT:
         fullColorLedOut( LED_OFF );
         certainLedOut( 0x01 );
-        //dirwall_control_flag = 1;
+        dirwall_control_flag = 1;
         runStraight( translation->accel, fast_path[motion_last].distance, fast_path[motion_last].start_speed, 
                     fast_path[motion_last].speed, fast_path[motion_last].end_speed );
         dirwall_control_flag = 0;
@@ -336,3 +580,4 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   setControlFlag( 0 );
   waitMotion( 100 );
 }
+#endif

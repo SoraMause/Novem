@@ -97,6 +97,7 @@ void waitStraight( void )
 
   sidewall_control_flag = 0;  // 壁制御は切る
   frontwall_control_flag = 0;
+  dirwall_control_flag = 0;
 
   rotation_trape_param.back_rightturn_flag = 0;
   
@@ -152,8 +153,9 @@ void waitSlaromOut( void )
     // 動作終了までメインは動作を待機状態にする
   }
 
+
   if ( sen_front.is_wall == 1 ){
-    while( sen_front.now < 190 );
+    while( sen_front.now < 240 );
   }
 
   // reset ideal data

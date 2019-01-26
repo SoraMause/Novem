@@ -29,8 +29,8 @@ void setLog( void )
 {
   if ( log_flag == 1 ){
     if ( log_count < 2048 ){
-      logger.sensor_left[log_count] = sen_fl_log.now;
-      logger.sensor_right[log_count] = sen_fr_log.now;
+      logger.sensor_left[log_count] = sen_l.now;
+      logger.sensor_right[log_count] = sen_r.now;
       logger.sensor_front[log_count] = sen_front.now;
       logger.trans_ideal_vel[log_count] = translation_ideal.velocity;
       logger.trans_vel[log_count] = right_real.velocity;

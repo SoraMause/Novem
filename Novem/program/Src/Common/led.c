@@ -26,8 +26,8 @@ uint8_t getPushsw( void )
 ///////////////////////////////////////////////////////////////////////
 void certainLedOut( uint8_t led )
 {
-  uint8_t _up = ( led & 0x01 );
-  uint8_t _down = ( led & 0x02 ) >> 1;  
+  uint8_t _up = ( ~led & 0x01 );
+  uint8_t _down = ( ~led & 0x02 ) >> 1;  
   HAL_GPIO_WritePin( led1_GPIO_Port, led1_Pin, _up );
   HAL_GPIO_WritePin( led2_GPIO_Port, led2_Pin, _down );
 }

@@ -169,7 +169,7 @@ void getADSensor( int16_t *adcount )
       ADCOffData[3] = ADCBuff[3];
 
       HAL_GPIO_WritePin( sensor_paluseL_GPIO_Port, sensor_paluseL_Pin, GPIO_PIN_SET );
-      for( i = 0; i < 50; i++ ){
+      for( i = 0; i < 200; i++ ){
 
       }
 
@@ -202,7 +202,7 @@ void getADSensor( int16_t *adcount )
       sen_fl_log.now = sen_fl.now;
 
       HAL_GPIO_WritePin( sensor_paluseR_GPIO_Port, sensor_paluseR_Pin, GPIO_PIN_SET );
-      for( i = 0; i < 400; i++ ){
+      for( i = 0; i < 600; i++ ){
 
       }
 
@@ -235,9 +235,7 @@ void getADSensor( int16_t *adcount )
       sen_r_log.now = sen_r.now;
 
       *adcount = FINISH_CONVERT;
-      for( i = 0; i < 100; i++ ){
 
-      }
       break;
 
     default:

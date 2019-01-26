@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 1;
-static uint8_t goal_y = 0;
+static uint8_t goal_x = 6;
+static uint8_t goal_y = 4;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -96,17 +96,17 @@ void mode_init( void )
 	rotation_trape_param.back_rightturn_flag = 0;
 	rotation_deviation.cumulative = 0.0;
   // to do search param と fast paramで分けれるようにする
-  setSlaromOffset( &slarom500, 19.0f, 21.0f, 19.0f, 21.0f, 7200.0f, 600.0f );
+  setSlaromOffset( &slarom500, 18.5f, 19.5f, 18.5f, 19.5f, 7200.0f, 600.0f );
 
   setPIDGain( &translation_gain, 1.5f, 30.0f, 0.0f );  
   setPIDGain( &rotation_gain, 0.47f, 45.0f, 0.0f ); 
   setPIDGain( &sensor_gain, 0.2f, 0.0f, 0.0f );
 
   // sensor 値設定
-  setSensorConstant( &sen_front, 600, 160 );
+  setSensorConstant( &sen_front, 650, 140 );
   // 区画中心　前壁 195
-  setSensorConstant( &sen_l, 340, 220 );
-  setSensorConstant( &sen_r, 265, 180 );
+  setSensorConstant( &sen_l, 230, 140 );
+  setSensorConstant( &sen_r, 260, 160 );
 
   certainLedOut( LED_FRONT );
   waitMotion( 100 );
@@ -207,11 +207,11 @@ void mode2( void )
   setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
   setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
 
-  setPIDGain( &sensor_gain, 0.1f, 0.0f, 0.0f );           // センサのゲイン調整(横壁)
+  setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );  
 
   loadWallData( &wall_data );
   
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0 ) == 0 ){
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0, 0 ) == 0 ){
     return;
   }
 
@@ -235,8 +235,8 @@ void mode3( void )
   }
   adcEnd();
   if ( wall_data.save == 1 ){
-    agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 0 );
-    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 1 );
+    //agentSetShortRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 1, 0 );
+    agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, PARAM_1000, 1 );
   }
   
 }
@@ -270,7 +270,7 @@ void mode4( void )
 
   loadWallData( &wall_data );
   
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0 ) == 0 ){
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, PARAM_1000, 0 ) == 0 ){
     return;
   }
 
@@ -325,13 +325,26 @@ void mode6( void )
 // スラロームチェック
 void mode7( void )
 {
-
+  setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );  
+  setPIDGain( &rotation_gain, 0.55f, 60.0f, 0.0f ); 
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
-  adjFront( 4000.0, 500.0f );
-  slaromRight( 500.0f );
-  runStraight( 4000.0f, 90.0f, 500.0f, 500.0f, 0.0f );
+  setControlFlag( 0 );
+  waitMotion( 300 );
+  funControl( FUN_ON );
+  waitMotion( 1000 );
+  setControlFlag( 1 );
+  adjFront( 10000.0, 1400.0f );
+  straightOneBlock( 1400.0f );
+  sidewall_control_flag = 1;
+  setStraight( 90.0f, 10000.0f, 1400.0f, 1400.0f, 1400.0f );
+  waitStraight();
+
+  setStraight( 90.0f, 10000.0f, 1400.0f, 1400.0f, 0.0f );
+  waitStraight();
+  waitMotion( 300 );
+  funControl( FUN_OFF );
   //straightHalfBlockStop( 4000.0f, 500.0f );
   
 }

@@ -157,12 +157,13 @@ int main(void)
     printf( "gyro z%f, batt_voltage : %f\r",rotation_real.velocity, batt_monitor );
 
     if( mode_counter == 0 ){
-      certainLedOut( LED_REAR );
+      certainLedOut( LED_FRONT );
       fullColorLedOut( LED_OFF );
     } else if ( mode_counter == 8 ){
       certainLedOut( LED_BOTH );
       fullColorLedOut( LED_OFF );
     } else {
+      certainLedOut( LED_OFF );
       fullColorLedOut( mode_counter );
     }
 
@@ -186,11 +187,13 @@ int main(void)
       modeSelect( mode_counter );
     }
 
-    if ( batt_monitor < 7.0f ){
+    if ( batt_monitor < 7.2f ){
       while( 1 ){
-        certainLedOut( 0xff );
+        certainLedOut( LED_REAR );
+        fullColorLedOut( LED_RED );
         waitMotion( 1000 );
-        certainLedOut( 0x00 );
+        certainLedOut( LED_OFF );
+        fullColorLedOut( LED_OFF );
         waitMotion( 1000 );
       }
     }

@@ -309,9 +309,8 @@ void agentSetShortRoute( uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_
 }
 
 
-int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t out_flag )
+int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t speed_mode, int8_t out_flag )
 {
-  fast_path_init();
 
   int16_t route[256];
   int8_t motion_buff[256];
@@ -322,7 +321,7 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
 
   for ( int i = 0; i < 256; i++ ){
     motion_queue[i] = 0;
-    motion_buff[i] = 0;
+    motion_queue[i] = 0;
     motion_data[i] = 0;
     route[i] = 0;
   }
@@ -374,22 +373,24 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
 
   motion_queue[cnt_dijkstra] = end_maze;
   cnt_dijkstra++; 
-  //printf( "cnt_dijkstra = %4d\r\n",cnt_dijkstra );
 
-  // to do 
-  // 中心から右斜め　45度ターン #0
-  // x= 90 y = 180
-  // 中心から右斜め　右斜めから直線　90度ターン　#1
-  // x = 180 y = 180
-  // 中心から右斜め　右90度ターン　右斜めから45度ターン 180 度ターン #2
-  // x = 180 y = 0
-  // 右斜め　右90度ターン　斜め１区画　斜め90度ターン #3
-  // x = 180 y = 0
-  // 右斜め90度ターン　右斜めから直線復帰 135度直線復帰ターン #4
-  // x = 180 y = -90
-  // 右斜めから復帰
-  // x = 90 y = 180　
-  // motion_queue にモーションを入れてしまう！
+  /*
+   to do 
+   中心から右斜め　45度ターン #0
+   x= 90 y = 180
+   中心から右斜め　右斜めから直線　90度ターン　#1
+   x = 180 y = 180
+   中心から右斜め　右90度ターン　右斜めから45度ターン 180 度ターン #2
+   x = 180 y = 0
+   右斜め　右90度ターン　斜め１区画　斜め90度ターン #3
+   x = 180 y = 0
+   右斜め90度ターン　右斜めから直線復帰 135度直線復帰ターン #4
+   x = 180 y = -90
+   右斜めから復帰
+   x = 90 y = 180　
+   motion_queue にモーションを入れてしまう！
+   */
+
   i  = 0;
   motion_queue[cnt_motion] = SET_STRAIGHT;
   cnt_motion = 1;
@@ -640,123 +641,13 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
     }
   }
 
-  // to do
-  // motionの目標速度、開始速度、終了速度、距離、モーションをそれぞれ指定すること
-  // 最後がスラロームの場合ゴール座標の中心でうまく停止できるようにすること
-  // 前壁制御で何とかすればいいのでは。
-  fast_path[0].start_speed = 0.0f;
-  fast_path[0].end_speed = 800.0f;
-  fast_path[0].speed = 700.0f;
-  fast_path[0].distance = 40.0f;
-  for( i = 1; i < cnt_motion; i++ ){
-    if ( i == cnt_motion -2 ){
-      fast_path[i].start_speed = 1000.0f;
-      fast_path[i].end_speed = 0.0f;
-    } else if ( i == cnt_motion - 1 ){
-      if ( motion_queue[i] == END_MOTION ) printf( "check end motion\r\n" );
-    } else {
-      fast_path[i].start_speed = 1000.0f;
-      fast_path[i].end_speed = 1000.0f;
-    }
-
-    if ( motion_buff[i] == front ){
-      fast_path[i].distance = motion_data[i] * ONE_BLOCK_DISTANCE;
-      // to do 距離によって変更
-      
-      if ( fast_path[i].distance > 10.0f * ONE_BLOCK_DISTANCE ) {
-         fast_path[i].speed = 2000.0f; 
-      } else if ( fast_path[i].distance > 7.0f * ONE_BLOCK_DISTANCE ) {
-         fast_path[i].speed = 1700.0f;
-      } else if ( fast_path[i].distance > 4.0f * ONE_BLOCK_DISTANCE ){
-        fast_path[i].speed = 1500.0f;
-      } else if ( fast_path[i].distance > 1.0f * ONE_BLOCK_DISTANCE ){
-        fast_path[i].speed = 1200.0f;
-      } else {
-        fast_path[i].speed = 1000.0f;
-      }
-    } else if ( motion_buff[i] == diagonal ){
-      fast_path[i].distance = motion_data[i] * SLATING_ONE_BLOCK_DISTANCE;
-      fast_path[i].speed = 1000.0f;
-    } else {
-      fast_path[i].distance = 0.0f;
-      fast_path[i].speed = 1000.0f;
-    }
+  if ( speed_mode == PARAM_1000 ){
+    setFastPathParameter1000( motion_buff, motion_data, &cnt_motion, out_flag );
   }
-
-  // もし、END_MOTIONの前がスラロームターンの場合
-  // 前壁制御を有効にして20mm進めようとする 必須条件　加速度 16 m /ss
-  // 停止する前に前壁制御を有効にしたdelay
-  if ( motion_queue[cnt_motion-2] != SET_STRAIGHT ){
-    // 終了速度を低速のまま
-    fast_path[cnt_motion-2].end_speed = 700.0f;
-    // 次の動作をEND_MOTIONから直線30mm 停止へ
-    motion_buff[cnt_motion-1] = front;
-    fast_path[cnt_motion-1].distance = 30.0f;
-    fast_path[cnt_motion-1].speed = 100.0f;
-    fast_path[cnt_motion-1].start_speed = 1000.0f;
-    fast_path[cnt_motion-1].end_speed = 0.0f;
-    // 壁制御を有効なストレートモードを作成すること
-    motion_queue[cnt_motion-1] = SET_FRONT_PD_STRAIGHT;
-    // delay
-    motion_buff[cnt_motion] = end_maze;
-    motion_queue[cnt_motion] = FRONTPD_DELAY;
-    cnt_motion++;
-    // cnt_motionにEND_MOTIONを入れてその後
-    motion_buff[cnt_motion] = end_maze;
-    motion_queue[cnt_motion] = END_MOTION;
-    cnt_motion++;
-  } else {
-    // 終了速度を低速のまま
-    fast_path[cnt_motion-2].end_speed = 1000.0f;
-    fast_path[cnt_motion-2].distance -= 90.0f;
-    // 次の動作をEND_MOTIONから直線30mm 停止へ
-    motion_buff[cnt_motion-1] = front;
-    fast_path[cnt_motion-1].distance = 90.0f;
-    fast_path[cnt_motion-1].speed = 500.0f;
-    fast_path[cnt_motion-1].start_speed = 1000.0f;
-    fast_path[cnt_motion-1].end_speed = 0.0f;
-    // 壁制御を有効なストレートモードを作成すること
-    motion_queue[cnt_motion-1] = SET_FRONT_PD_STRAIGHT;
-    // delay
-    motion_buff[cnt_motion] = end_maze;
-    motion_queue[cnt_motion] = FRONTPD_DELAY;
-    cnt_motion++;
-    // cnt_motionにEND_MOTIONを入れてその後
-    motion_buff[cnt_motion] = end_maze;
-    motion_queue[cnt_motion] = END_MOTION;
-    cnt_motion++;
-  }
-
+  
   
   // 結果の表示
   if ( out_flag == 1 ){
-    #if 0
-    printf( "\r\n最短圧縮前\r\n\r\n" );
-    for( i = 0; i< cnt_dijkstra; i++ ){
-      if(GO1<=route[i] && route[i]<=GO15) 
-        printf("%dマス直進\r\n", route[i] );
-      if(DIA_GO1<=route[i] && route[i]<=DIA_GO31)
-        printf("%dマス斜め直進\r\n",route[i]-DIA_GO1 + 1);
-      if(route[i]==TURNR)
-        printf("右９０度方向へスラローム\r\n");
-      if(route[i]==TURNL)
-        printf("左９０度方向へスラローム\r\n");
-      if(route[i]==DIA_TO_CLOTHOIDR)
-        printf("直進から１マス使って斜め右方向へ\r\n");
-      if(route[i]==DIA_TO_CLOTHOIDL)
-        printf("直進から１マス使って斜め左方向へ\r\n");
-      if(route[i]==DIA_FROM_CLOTHOIDR)
-        printf("斜め右方向から直進へ\r\n");
-      if(route[i]==DIA_FROM_CLOTHOIDL)
-        printf("斜め左方向から直進へ\r\n");
-      if(route[i]==DIA_TURNR)
-        printf("斜めから右９０度方向ターンして斜めへ\r\n");
-      if(route[i]==DIA_TURNL)
-        printf("斜めから左９０度方向ターンして斜めへ\r\n");
-      if(route[i]==SNODE)
-        printf("おわり\r\n\r\n");
-    }
-    #endif
 
     printf( "\r\n最短圧縮後\r\n\r\n");
     for( i = 0; i < cnt_motion; i++ ){
@@ -830,4 +721,114 @@ int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maz
 
   return 1;
 
+}
+
+void setFastPathParameter1000( int8_t motion_buff[256], int8_t motion_data[256], uint8_t *cnt_motion, int8_t out_flag )
+{
+
+  /*  
+   to do
+   motionの目標速度、開始速度、終了速度、距離、モーションをそれぞれ指定すること
+   最後がスラロームの場合ゴール座標の中心でうまく停止できるようにすること
+   前壁制御で何とかすればいいのでは。
+   */
+  
+  fast_path_init();
+  motion_buff[0] = front;
+  fast_path[0].start_speed = 0.0f;
+  fast_path[0].end_speed = 700.0f;
+  fast_path[0].speed = 700.0f;
+  fast_path[0].distance = 40.0f;
+  for( int i = 1; i < *cnt_motion; i++ ){
+    if ( i == *cnt_motion -2 ){
+      fast_path[i].start_speed = 1000.0f;
+      fast_path[i].end_speed = 0.0f;
+    } else if ( i == *cnt_motion - 1 ){
+      if ( motion_queue[i] == END_MOTION && out_flag == 1 ) printf( "check end motion\r\n" );
+    } else {
+      fast_path[i].start_speed = 1000.0f;
+      fast_path[i].end_speed = 1000.0f;
+    }
+
+    if ( motion_buff[i] == front ){
+      fast_path[i].distance = motion_data[i] * ONE_BLOCK_DISTANCE;
+      // to do 距離によって変更
+      
+      if ( fast_path[i].distance > 7.0f * ONE_BLOCK_DISTANCE ) {
+         fast_path[i].speed = 2000.0f; 
+      } else if ( fast_path[i].distance > 5.0f * ONE_BLOCK_DISTANCE ) {
+         fast_path[i].speed = 1800.0f;
+      } else if ( fast_path[i].distance > 3.0f * ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1500.0f;
+      } else if ( fast_path[i].distance > 1.0f * ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1200.0f;
+      } else {
+        fast_path[i].speed = 1000.0f;
+      }
+    } else if ( motion_buff[i] == diagonal ){
+      fast_path[i].distance = motion_data[i] * SLATING_ONE_BLOCK_DISTANCE;
+
+      if ( fast_path[i].distance > 12.0f * SLATING_ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 2000.0f;
+      } else if ( fast_path[i].distance > 9.0f * SLATING_ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1800.0f;
+      } else if ( fast_path[i].distance > 6.0f * SLATING_ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1600.0f;
+      } else if ( fast_path[i].distance > 4.0f * SLATING_ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1400.0f;
+      } else if ( fast_path[i].distance > 2.0f * SLATING_ONE_BLOCK_DISTANCE ){
+        fast_path[i].speed = 1200.0f;
+      } else {
+        fast_path[i].speed = 1000.0f;
+      }
+    } else {
+      fast_path[i].distance = 0.0f;
+      fast_path[i].speed = 1000.0f;
+    }
+  }
+
+  // もし、END_MOTIONの前がスラロームターンの場合
+  // 前壁制御を有効にして20mm進めようとする 必須条件　加速度 16 m /ss
+  // 停止する前に前壁制御を有効にしたdelay
+  if ( motion_queue[*cnt_motion-2] != SET_STRAIGHT ){
+    // 終了速度を低速のまま
+    fast_path[*cnt_motion-2].end_speed = 700.0f;
+    // 次の動作をEND_MOTIONから直線30mm 停止へ
+    motion_buff[*cnt_motion-1] = front;
+    fast_path[*cnt_motion-1].distance = 30.0f;
+    fast_path[*cnt_motion-1].speed = 100.0f;
+    fast_path[*cnt_motion-1].start_speed = 1000.0f;
+    fast_path[*cnt_motion-1].end_speed = 0.0f;
+    // 壁制御を有効なストレートモードを作成すること
+    motion_queue[*cnt_motion-1] = SET_FRONT_PD_STRAIGHT;
+    // delay
+    motion_buff[*cnt_motion] = end_maze;
+    motion_queue[*cnt_motion] = FRONTPD_DELAY;
+    (*cnt_motion)++;
+    // cnt_motionにEND_MOTIONを入れてその後
+    motion_buff[*cnt_motion] = end_maze;
+    motion_queue[*cnt_motion] = END_MOTION;
+    (*cnt_motion)++;
+  } else {
+    // 終了速度を低速のまま
+    fast_path[*cnt_motion-2].end_speed = 1000.0f;
+    fast_path[*cnt_motion-2].distance -= 90.0f;
+    // 次の動作をEND_MOTIONから直線30mm 停止へ
+    motion_buff[*cnt_motion-1] = front;
+    fast_path[*cnt_motion-1].distance = 90.0f;
+    fast_path[*cnt_motion-1].speed = 300.0f;
+    fast_path[*cnt_motion-1].start_speed = 1000.0f;
+    fast_path[*cnt_motion-1].end_speed = 0.0f;
+    // 壁制御を有効なストレートモードを作成すること
+    motion_queue[*cnt_motion-1] = SET_FRONT_PD_STRAIGHT;
+    // delay
+    motion_buff[*cnt_motion] = end_maze;
+    motion_queue[*cnt_motion] = DELAY;
+    (*cnt_motion)++;
+    // cnt_motionにEND_MOTIONを入れてその後
+    motion_buff[*cnt_motion] = end_maze;
+    motion_queue[*cnt_motion] = END_MOTION;
+    (*cnt_motion)++;
+  }
+  
 }
