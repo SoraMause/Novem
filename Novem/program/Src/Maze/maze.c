@@ -12,6 +12,15 @@ static uint32_t goal_data[32];
 static uint8_t check_all_search_flag = 0;
 
 /**
+* 全面探索が終わったかどうかを返す
+* 終わっている場合 1 終わってない場合 0
+*/
+uint8_t checkAllSearch( void )
+{
+	return check_all_search_flag;
+}
+
+/**
 * ゴール座標を初期化
 */
 void goalData_Init(uint8_t maze_scale)

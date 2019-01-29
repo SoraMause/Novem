@@ -3,15 +3,18 @@
 
 #include <stdint.h>
 
+#define LOG_NUMBER 4096
+
 typedef struct {
-  float trans_ideal_vel[2048];
-  float trans_vel[2048];
-  float rotation_ideal[2048];
-  float rotation_vel[2048];
-  int16_t sensor_left[2048];
-  int16_t sensor_right[2048];
-  int16_t sensor_front[2048];
-  int16_t batt_data[2048];
+  int16_t trans_ideal_vel[LOG_NUMBER];
+  int16_t trans_vel[LOG_NUMBER];
+  int16_t rotation_ideal[LOG_NUMBER];
+  int16_t rotation_vel[LOG_NUMBER];
+  float trans_dis[LOG_NUMBER];
+  int16_t sensor_left[LOG_NUMBER];
+  int16_t sensor_right[LOG_NUMBER];
+  int16_t sensor_front[LOG_NUMBER];
+  int8_t batt_data[LOG_NUMBER];
 }t_log_data;
 
 extern t_log_data logger;

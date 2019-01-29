@@ -18,6 +18,8 @@
 #define MAX_STEP 65535
 
 // 重ね探索について考える
+uint8_t checkAllSearch( void );
+
 void goalData_Init( uint8_t maze_scale );
 void setGoalDataBit( uint8_t x, uint8_t y );
 void clearGoalDataBit( uint8_t x, uint8_t y );

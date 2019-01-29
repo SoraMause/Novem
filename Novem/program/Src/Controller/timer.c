@@ -99,7 +99,11 @@ void interrupt( void )
 
   } else {
     motorControl( 0, 0 );
-    if ( !(mode_counter & 0x80) ) integralDistance( &right_real.velocity, &mode_distance );
+    if ( !(mode_counter & 0x80) ) {
+      integralDistance( &right_real.velocity, &mode_distance );
+    } else {
+      integralDistance( &left_real.velocity, &mode_distance );
+    }
   }
 
   setLog();

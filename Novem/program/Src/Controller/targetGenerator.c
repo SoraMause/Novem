@@ -61,8 +61,8 @@ void PIDControl( t_run *ideal, t_run *left, t_run *right, t_deviation *left_devi
   left_deviation->difference = left_error;
   right_deviation->difference = right_error;
 
-  duty_left = (int32_t)left_p + left_i + left_d;
-  duty_right = (int32_t)right_p + right_i + right_d;
+  duty_left = (int32_t)(left_p + left_i + left_d);
+  duty_right = (int32_t)(right_p + right_i + right_d);
 
   if ( rotation_control == 1 ){
     duty_left = -1 * duty_left; // 回転方向逆にする 
@@ -130,7 +130,6 @@ void frontWallControl( void )
 {
   // 前壁については普通にゲイン調整して合わせること。
   // 前壁制御フラグが1のときのみ制御を行う
-  // 665
   if ( frontwall_control_flag == 1 && sen_front.is_wall == 1 && right_real.velocity < 200.0f ){
     frontwall_control_value = (float) 1.0f * (sen_front.now - sen_front.reference);
   } else {

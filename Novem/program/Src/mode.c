@@ -25,7 +25,7 @@
 
 // ゴール座標の設定
 static uint8_t goal_x = 6;
-static uint8_t goal_y = 4;
+static uint8_t goal_y = 0;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -80,12 +80,14 @@ void modeSelect( int8_t mode )
 	translation_ideal.velocity = 0.0;
   setControlFlag( 0 );
   mode_counter = 0;
+  mode_distance = 0.0f;
 }
 
 void mode_init( void )
 {
   printf("\r\n");
   failSafe_flag = 0;
+  mode_distance = 0.0f;
   mode_counter |= 0x80;
 	translation_ideal.accel = 0.0;
 	translation_ideal.velocity = 0.0;
@@ -204,21 +206,61 @@ void mode1( void )
 // 足立法最短( 斜めあり )
 void mode2( void )
 {
-  setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
-  setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
-
-  setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );  
+  int8_t speed_count = 0;
 
   loadWallData( &wall_data );
+  positionReset( &mypos );
+
+  while( getPushsw() == 0 ){
+    printf( "mode_distance = %5.5f, speed_count = %1d\r",mode_distance, speed_count );
+    if ( mode_distance > 30.0f ){
+      speed_count++;
+      mode_distance = 0.0f;
+      if ( speed_count > 1 ) speed_count = 0;
+      buzzermodeSelect( speed_count );
+      waitMotion( 300 );
+    }
+
+    if ( mode_distance < -30.0f ){
+      speed_count--;
+      mode_distance = 0.0f;
+      if ( mode_counter < 0 ) speed_count = 1;
+      buzzermodeSelect( speed_count );
+      waitMotion( 300 );
+    }
+
+    fullColorLedOut( speed_count );
+  }
+
+  certainLedOut( LED_BOTH );
+  waitMotion( 100 );
+  certainLedOut( LED_OFF );
+
+  if ( speed_count == 0 ){
+    speed_count = PARAM_1000;
+    setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
+    setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );
+  } else if ( speed_count == 1 ){
+    speed_count = PARAM_1400;
+    setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
+    setPIDGain( &translation_gain, 2.6f, 40.0f, 0.0f );  
+    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f ); 
+  }
   
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, 0, 0 ) == 0 ){
+  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, speed_count, 0 ) == 0 ){
     return;
   }
 
-  positionReset( &mypos );
   startAction();
 
-  adachiFastRunDiagonal( &run_param, &rotation_param );
+  if ( speed_count == PARAM_1000 ){
+    adachiFastRunDiagonal1000( &run_param, &rotation_param );
+  } else if ( speed_count == PARAM_1400 ) {
+    adachiFastRunDiagonal1400( &run_param, &rotation_param );
+  }
+  
 
 }
 
@@ -265,30 +307,35 @@ void mode4( void )
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
 
-  setNormalRunParam( &run_param, 12000.0f, 500.0f );       // 加速度、速度指定
-  setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
+  #if 0
+  if ( mypos.x == 0 && mypos.y == 0 ){
+    setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
+    setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定
 
-  loadWallData( &wall_data );
-  
-  if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, PARAM_1000, 0 ) == 0 ){
-    return;
+    loadWallData( &wall_data );
+    
+    if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, PARAM_1000, 0 ) == 0 ){
+      return;
+    }
+
+    positionReset( &mypos );
+
+    buzzerSetMonophonic( C_H_SCALE, 100 );
+    HAL_Delay( 110 );
+    buzzerSetMonophonic( C_H_SCALE, 100 );
+    HAL_Delay( 110 );
+
+    MPU6500_z_axis_offset_calc_start();
+    while( MPU6500_calc_check() ==  0 );
+    adcStart();
+    waitMotion( 100 );
+    
+    setControlFlag( 1 );
+
+    adachiFastRunDiagonal1000( &run_param, &rotation_param );
   }
+  #endif
 
-  positionReset( &mypos );
-
-  buzzerSetMonophonic( C_H_SCALE, 100 );
-  HAL_Delay( 110 );
-  buzzerSetMonophonic( C_H_SCALE, 100 );
-  HAL_Delay( 110 );
-
-  MPU6500_z_axis_offset_calc_start();
-  while( MPU6500_calc_check() ==  0 );
-  adcStart();
-  waitMotion( 100 );
-  
-  setControlFlag( 1 );
-
-  adachiFastRunDiagonal( &run_param, &rotation_param );
 }
 
 // 直進、超進地チェック
@@ -325,8 +372,9 @@ void mode6( void )
 // スラロームチェック
 void mode7( void )
 {
-  setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );  
-  setPIDGain( &rotation_gain, 0.55f, 60.0f, 0.0f ); 
+  
+  setPIDGain( &translation_gain, 2.2f, 40.0f, 0.0f );  
+  setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f ); 
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
@@ -335,14 +383,39 @@ void mode7( void )
   funControl( FUN_ON );
   waitMotion( 1000 );
   setControlFlag( 1 );
-  adjFront( 10000.0, 1400.0f );
-  straightOneBlock( 1400.0f );
   sidewall_control_flag = 1;
-  setStraight( 90.0f, 10000.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 400.0f, 18000.0f, 1400.0f, 0.0f, 1400.0f );
   waitStraight();
+  // turn param
+  
+  // 90度ターン
+  //sidewall_control_flag = 1;
+  //setStraight( 42.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  //waitStraight();
+  //setRotation( 90.0f, 14000.0f, 1000.0f, 1400.0f );
+  //waitRotation();
+  //sidewall_control_flag = 1;
+  //setStraight( 46.5f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  //waitStraight();
 
-  setStraight( 90.0f, 10000.0f, 1400.0f, 1400.0f, 0.0f );
-  waitStraight();
+
+  // 180度ターン
+  //sidewall_control_flag = 1;
+  //setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  //waitStraight();
+  //setRotation( 180.0f, 12000.0f, 950.0f, 1400.0f );
+  //waitRotation();
+  //sidewall_control_flag = 1;
+  //setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  //waitStraight();
+
+
+  //setStraight( 127.28f, 18000.0f, 1400.0f, 1400.0f, 0.0f );
+  //waitStraight();
+
+  //setStraight( 180.0f, 18000.0f, 1400.0f, 14000.0f, 0.0f );
+  //waitStraight();
+
   waitMotion( 300 );
   funControl( FUN_OFF );
   //straightHalfBlockStop( 4000.0f, 500.0f );
@@ -355,6 +428,10 @@ void mode8( void )
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
+  setControlFlag( 0 );
+  funControl( FUN_ON );
+  waitMotion( 1000 );
+  setControlFlag( 1 );
   translation_ideal.velocity = 0.0f;
   rotation_ideal.velocity = 0.0f;
   while( 1 );

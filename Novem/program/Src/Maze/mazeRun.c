@@ -139,6 +139,8 @@ void adachiSearchRunKnown( int8_t gx, int8_t gy, t_normal_param *translation, t_
     // 探索時間が2分30秒以上たっていた場合打ち切り。
     if( cnt_act > SEARCH_MAX_TIME ) break;
 
+    if ( checkAllSearch() == 1 ) break;
+
   }
     
   addWall( pos, wall );
@@ -190,7 +192,7 @@ void adachiFastRun( t_normal_param *translation, t_normal_param *rotation )
   waitMotion( 100 );
 }
 
-void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
+void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rotation )
 {
   
   setControlFlag( 0 );
@@ -331,6 +333,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         dirwall_control_flag = 1;
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
+        //waitDiaTurnOut( left );
         setRotation( 90.0f, 12000.0f, 960.0f, 1000.0f );
         waitRotation();
         dirwall_control_flag = 1;
@@ -343,6 +346,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         certainLedOut( 0x02 );
         dirwall_control_flag = 1;
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        //waitDiaTurnOut( right );
         waitStraight();
         setRotation( -90.0f, 12000.0f, 960.0f, 1000.0f );
         waitRotation();
@@ -388,7 +392,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         setRotation( 135.0f, 10000.0f, 800.0f, 1000.0f );
         waitRotation();
         sidewall_control_flag = 1;    // 壁制御有効
-        setStraight( 62.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        setStraight( 61.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         break;
 
@@ -401,7 +405,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
         setRotation( -135.0f, 10000.0f, 800.0f, 1000.0f );
         waitRotation();
         sidewall_control_flag = 1;    // 壁制御有効
-        setStraight( 62.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
+        setStraight( 61.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         break;
 
@@ -433,8 +437,7 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   waitMotion( 100 );
 }
 
-#if 0
-void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotation )
+void adachiFastRunDiagonal1400( t_normal_param *translation, t_normal_param *rotation )
 {
   
   setControlFlag( 0 );
@@ -580,4 +583,3 @@ void adachiFastRunDiagonal( t_normal_param *translation, t_normal_param *rotatio
   setControlFlag( 0 );
   waitMotion( 100 );
 }
-#endif

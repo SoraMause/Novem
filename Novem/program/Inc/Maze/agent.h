@@ -76,5 +76,6 @@ void agentSetShortRoute( uint8_t gx, uint8_t gy, t_walldata *wall, uint8_t maze_
 int8_t agentDijkstraRoute( int16_t gx, int16_t gy, t_walldata *wall, uint8_t maze_scale, int8_t _straight, int8_t speed_mode, int8_t out_flag );
 
 void setFastPathParameter1000( int8_t motion_buff[256], int8_t motion_data[256], uint8_t *cnt_motion, int8_t out_flag );
+void setFastPathParameter1400( int8_t motion_buff[256], int8_t motion_data[256], uint8_t *cnt_motion, int8_t out_flag );
 #endif /* __AGENT_H */
 

@@ -117,51 +117,23 @@ void runStraight( float accel , float distance, float start_vel, float run_vel, 
 // 中心から90度
 void slaromCenterLeft( float accel )
 {
-  sidewall_control_flag = 1;
-  setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
-  setRotation( 90.0f, 12000.0f, 960.0f, 1400.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 35.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
+
 }
 
 void slaromCenterRight( float accel )
 {
-  sidewall_control_flag = 1;
-  setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
-  setRotation( -90.0f, 12000.0f, 960.0f, 1400.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 35.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
+
 }
 
 // 中心から180度
 void slaromCenterLeft180( float accel )
 {
-  sidewall_control_flag = 1;
-  setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
-  setRotation( 180.0f, 12000.0f, 950.0f, 1400.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
+
 }
 
 void slaromCenterRight180( float accel )
 {
-  sidewall_control_flag = 1;
-  setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
-  setRotation( -180.0f, 12000.0f, 950.0f, 1400.0f );
-  waitRotation();
-  sidewall_control_flag = 1;
-  setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  waitStraight();
+
 }
 
 // 中心から45度
