@@ -111,14 +111,14 @@ void sideWallControl( void )
     sidewall_control_value = 0.0f;
     // 4つのセンサのそれぞれの値の閾値を決めてそれに対して制御量を気持ち与える。
     // 2019 1/25 fl: , l: , fr: , r:
-    if ( sen_fl.now > 170 && sen_fl.diff < 50 ){
-      sidewall_control_value = (float)0.6f * ( sen_fl.now - 120 );
-    } else if ( sen_l.now > 730 && sen_l.diff_1ms < 50 ){
-      sidewall_control_value = (float)0.6f * ( sen_l.now - 690 );
+    if ( sen_fl.now > 160 && sen_fl.diff < 50 ){
+      sidewall_control_value = (float)0.6f * ( sen_fl.now - 110 );
+    } else if ( sen_l.now > 700 && sen_l.diff_1ms < 50 ){
+      sidewall_control_value = (float)0.6f * ( sen_l.now - 650 );
     } else if ( sen_fr.now > 140 && sen_fr.diff < 50 ){
       sidewall_control_value = (float)-0.6f * ( sen_fr.now - 90 );
-    } else if ( sen_r.now > 690 && sen_r.diff_1ms < 50 ){
-      sidewall_control_value = (float)-0.6f * ( sen_r.now - 650 );
+    } else if ( sen_r.now > 600 && sen_r.diff_1ms < 50 ){
+      sidewall_control_value = (float)-0.6f * ( sen_r.now - 550 );
     }
   } else {
     sidewall_control_value = 0.0f;

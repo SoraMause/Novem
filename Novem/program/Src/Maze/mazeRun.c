@@ -14,6 +14,7 @@
 #include "timer.h"
 #include "buzzer.h"
 #include "led.h"
+#include "logger.h"
 
 #define SEARCH_MAX_TIME 150000
 
@@ -196,7 +197,9 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
 {
   
   setControlFlag( 0 );
+  setLogFlag( 0 );
   waitMotion( 1000 );
+  setLogFlag( 1 );
   setControlFlag( 1 );
   
   while( motion_queue[motion_last] != END ){
@@ -331,9 +334,14 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( LED_OFF );
         certainLedOut( 0x02 );
         dirwall_control_flag = 1;
+        if ( sen_l.is_wall == 1 ){
+          while( sen_l.now > sen_l.threshold );
+          translation_ideal.distance = 11.0f;
+        } else {
+          translation_ideal.distance = 11.0f;
+        }
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
-        //waitDiaTurnOut( left );
         setRotation( 90.0f, 12000.0f, 960.0f, 1000.0f );
         waitRotation();
         dirwall_control_flag = 1;
@@ -345,8 +353,13 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( LED_OFF );
         certainLedOut( 0x02 );
         dirwall_control_flag = 1;
+        if ( sen_r.is_wall == 1 ){
+          while( sen_r.now > sen_r.threshold );
+          translation_ideal.distance = 8.0f;
+        } else {
+          translation_ideal.distance = 8.0f;
+        }
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
-        //waitDiaTurnOut( right );
         waitStraight();
         setRotation( -90.0f, 12000.0f, 960.0f, 1000.0f );
         waitRotation();
@@ -360,6 +373,12 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x0f );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
+        if ( sen_l.is_wall == 1 ){
+          while( sen_l.now > sen_l.threshold );
+          translation_ideal.distance = 11.0f;
+        } else {
+          translation_ideal.distance = 11.0f;
+        }
         setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( 45.0f, 10000.0f, 500.0f, 1000.0f );
@@ -373,6 +392,12 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x0f );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
+        if ( sen_r.is_wall == 1 ){
+          while( sen_r.now > sen_r.threshold );
+          translation_ideal.distance = 8.0f;
+        } else {
+          translation_ideal.distance = 8.0f;
+        }
         setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( -45.0f, 10000.0f, 500.0f, 1000.0f );
@@ -387,6 +412,12 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x06 );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
+        if ( sen_l.is_wall == 1 ){
+          while( sen_l.now > sen_l.threshold );
+          translation_ideal.distance = 11.0f;
+        } else {
+          translation_ideal.distance = 11.0f;
+        }
         setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( 135.0f, 10000.0f, 800.0f, 1000.0f );
@@ -400,6 +431,12 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x06 );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
+        if ( sen_r.is_wall == 1 ){
+          while( sen_r.now > sen_r.threshold );
+          translation_ideal.distance = 8.0f;
+        } else {
+          translation_ideal.distance = 8.0f;
+        }
         setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( -135.0f, 10000.0f, 800.0f, 1000.0f );
@@ -441,8 +478,10 @@ void adachiFastRunDiagonal1400( t_normal_param *translation, t_normal_param *rot
 {
   
   setControlFlag( 0 );
+  setLogFlag( 0 );
   funControl( FUN_ON );
   waitMotion( 1000 );
+  setLogFlag( 1 );
   setControlFlag( 1 );
   
   while( motion_queue[motion_last] != 0 ){
@@ -581,5 +620,6 @@ void adachiFastRunDiagonal1400( t_normal_param *translation, t_normal_param *rot
   funControl( FUN_OFF );
   buzzerSetMonophonic( NORMAL, 100 );
   setControlFlag( 0 );
+  setLogFlag( 0 );
   waitMotion( 100 );
 }

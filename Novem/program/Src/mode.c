@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 6;
-static uint8_t goal_y = 0;
+static uint8_t goal_x = 0;
+static uint8_t goal_y = 6;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -107,8 +107,8 @@ void mode_init( void )
   // sensor 値設定
   setSensorConstant( &sen_front, 650, 140 );
   // 区画中心　前壁 195
-  setSensorConstant( &sen_l, 230, 140 );
-  setSensorConstant( &sen_r, 260, 160 );
+  setSensorConstant( &sen_l, 305, 170 );
+  setSensorConstant( &sen_r, 250, 160 );
 
   certainLedOut( LED_FRONT );
   waitMotion( 100 );
@@ -260,7 +260,13 @@ void mode2( void )
   } else if ( speed_count == PARAM_1400 ) {
     adachiFastRunDiagonal1400( &run_param, &rotation_param );
   }
-  
+
+  // debug 
+  fullColorLedOut( 0x0f );
+  waitMotion( 2000 );
+  fullColorLedOut( 0x00 );
+  while( getPushsw() == 0 );
+  showLog();  
 
 }
 
@@ -300,12 +306,21 @@ void mode4( void )
   setControlFlag( 0 );
   writeFlashData( &wall_bit );
   setVirtualGoal( MAZE_CLASSIC_SIZE, &wall_data );
-  adcStart();
-  setControlFlag( 1 );
-  adachiSearchRunKnown( 0, 0, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );
-  adcEnd();
-  setControlFlag( 0 );
-  writeFlashData( &wall_bit );
+
+  mazeUpdateMap( 0, 0, &wall_data, MAZE_CLASSIC_SIZE );
+
+  if ( checkAllSearch() == 1 ){
+    fullColorLedOut( 0x0f );
+    waitMotion( 100 );
+    fullColorLedOut( LED_OFF );
+  } else {
+    adcStart();
+    setControlFlag( 1 );
+    adachiSearchRunKnown( 0, 0, &run_param, &rotation_param, &wall_data, &wall_bit, &mypos, MAZE_CLASSIC_SIZE );
+    adcEnd();
+    setControlFlag( 0 );
+    writeFlashData( &wall_bit );
+  }
 
   #if 0
   if ( mypos.x == 0 && mypos.y == 0 ){
@@ -378,47 +393,28 @@ void mode7( void )
   buzzerSetMonophonic( NORMAL, 200 );
   HAL_Delay(300); 
   startAction();
+  setLogFlag( 0 );
   setControlFlag( 0 );
   waitMotion( 300 );
   funControl( FUN_ON );
   waitMotion( 1000 );
+  setLogFlag( 1 );
   setControlFlag( 1 );
-  sidewall_control_flag = 1;
-  setStraight( 400.0f, 18000.0f, 1400.0f, 0.0f, 1400.0f );
-  waitStraight();
   // turn param
-  
-  // 90度ターン
-  //sidewall_control_flag = 1;
-  //setStraight( 42.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  //waitStraight();
-  //setRotation( 90.0f, 14000.0f, 1000.0f, 1400.0f );
-  //waitRotation();
-  //sidewall_control_flag = 1;
-  //setStraight( 46.5f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  //waitStraight();
 
-
-  // 180度ターン
-  //sidewall_control_flag = 1;
-  //setStraight( 21.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  //waitStraight();
-  //setRotation( 180.0f, 12000.0f, 950.0f, 1400.0f );
-  //waitRotation();
-  //sidewall_control_flag = 1;
-  //setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
-  //waitStraight();
-
-
-  //setStraight( 127.28f, 18000.0f, 1400.0f, 1400.0f, 0.0f );
+  //setStraight( 254.56f, 18000.0f, 1400.0f, 1400.0f, 0.0f );
   //waitStraight();
 
   //setStraight( 180.0f, 18000.0f, 1400.0f, 14000.0f, 0.0f );
   //waitStraight();
 
+  setLogFlag( 0 );
   waitMotion( 300 );
   funControl( FUN_OFF );
-  //straightHalfBlockStop( 4000.0f, 500.0f );
+  setControlFlag( 0 );
+
+  while( getPushsw() == 0 );
+  showLog();
   
 }
 
@@ -431,7 +427,7 @@ void mode8( void )
   setControlFlag( 0 );
   funControl( FUN_ON );
   waitMotion( 1000 );
-  setControlFlag( 1 );
+  //setControlFlag( 1 );
   translation_ideal.velocity = 0.0f;
   rotation_ideal.velocity = 0.0f;
   while( 1 );
