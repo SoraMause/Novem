@@ -218,9 +218,9 @@ void slaromLeftV90( void )
   dirwall_control_flag = 1;
   if ( sen_l.is_wall == 1 ){
     while( sen_l.now > sen_l.threshold );
-    translation_ideal.distance = 11.2f;
+    translation_ideal.distance = 8.4f;
   } else {
-    translation_ideal.distance = 11.2f;
+    translation_ideal.distance = 8.4f;
   }
   setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
@@ -234,12 +234,9 @@ void slaromLeftV90( void )
 void slaromRightV90( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_r.is_wall == 1 ){
-    while( sen_r.now > sen_r.threshold );
-    translation_ideal.distance = 8.4f;
-  } else {
-    translation_ideal.distance = 8.4f;
-  }
+  while( sen_r.now > sen_r.threshold );
+  translation_ideal.distance = 8.4f;
+
   setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -90.0f, 30000.0f, 1200.0f, 1400.0f );
@@ -253,12 +250,10 @@ void slaromRightV90( void )
 void slaromReturnDiaLeft45( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_l.is_wall == 1 ){
-    while( sen_l.now > sen_l.threshold );
-    translation_ideal.distance = 11.2f;
-  } else {
-    translation_ideal.distance = 11.2f;
-  }
+
+  while( sen_l.now > sen_l.threshold );
+  translation_ideal.distance = 8.4f;
+  
   setStraight( 55.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 45.0f, 20000.0f, 900.0f, 1400.0f );
@@ -271,12 +266,10 @@ void slaromReturnDiaLeft45( void )
 void slaromReturnDiaRight45( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_r.is_wall == 1 ){
-    while( sen_r.now > sen_r.threshold );
-    translation_ideal.distance = 8.4f;
-  } else {
-    translation_ideal.distance = 8.4f;
-  }
+  
+  while( sen_r.now > sen_r.threshold );
+  translation_ideal.distance = 8.4f;
+
   setStraight( 55.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -45.0f, 20000.0f, 900.0f, 1400.0f );
@@ -290,12 +283,10 @@ void slaromReturnDiaRight45( void )
 void slaromReturnDiaLeft135( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_l.is_wall == 1 ){
-    while( sen_l.now > sen_l.threshold );
-    translation_ideal.distance = 11.2f;
-  } else {
-    translation_ideal.distance = 11.2f;
-  }
+  
+  while( sen_l.now > sen_l.threshold );
+  translation_ideal.distance = 8.4f;
+
   setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 135.0f, 25000.0f, 1200.0f, 1400.0f );
@@ -308,12 +299,10 @@ void slaromReturnDiaLeft135( void )
 void slaromReturnDiaRight135( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_r.is_wall == 1 ){
-    while( sen_r.now > sen_r.threshold );
-    translation_ideal.distance = 8.4f;
-  } else {
-    translation_ideal.distance = 8.4f;
-  }
+
+  while( sen_r.now > sen_r.threshold );
+  translation_ideal.distance = 8.4f;
+
   setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -135.0f, 25000.0f, 1200.0f, 1400.0f );

@@ -24,8 +24,8 @@
 #include "mazeRun.h"
 
 // ゴール座標の設定
-static uint8_t goal_x = 0;
-static uint8_t goal_y = 6;
+static uint8_t goal_x = 1;
+static uint8_t goal_y = 0;
 static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
@@ -107,7 +107,7 @@ void mode_init( void )
   // sensor 値設定
   setSensorConstant( &sen_front, 650, 140 );
   // 区画中心　前壁 195
-  setSensorConstant( &sen_l, 305, 170 );
+  setSensorConstant( &sen_l, 305, 180 );
   setSensorConstant( &sen_r, 250, 160 );
 
   certainLedOut( LED_FRONT );

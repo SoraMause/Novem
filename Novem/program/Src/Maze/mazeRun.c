@@ -334,12 +334,10 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( LED_OFF );
         certainLedOut( 0x02 );
         dirwall_control_flag = 1;
-        if ( sen_l.is_wall == 1 ){
-          while( sen_l.now > sen_l.threshold );
-          translation_ideal.distance = 11.0f;
-        } else {
-          translation_ideal.distance = 11.0f;
-        }
+        
+        //while( sen_l.now > sen_l.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( 90.0f, 12000.0f, 960.0f, 1000.0f );
@@ -353,12 +351,10 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( LED_OFF );
         certainLedOut( 0x02 );
         dirwall_control_flag = 1;
-        if ( sen_r.is_wall == 1 ){
-          while( sen_r.now > sen_r.threshold );
-          translation_ideal.distance = 8.0f;
-        } else {
-          translation_ideal.distance = 8.0f;
-        }
+        
+        //while( sen_r.now > sen_r.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 15.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( -90.0f, 12000.0f, 960.0f, 1000.0f );
@@ -373,12 +369,9 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x0f );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
-        if ( sen_l.is_wall == 1 ){
-          while( sen_l.now > sen_l.threshold );
-          translation_ideal.distance = 11.0f;
-        } else {
-          translation_ideal.distance = 11.0f;
-        }
+        //while( sen_l.now > sen_l.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( 45.0f, 10000.0f, 500.0f, 1000.0f );
@@ -392,12 +385,9 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x0f );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
-        if ( sen_r.is_wall == 1 ){
-          while( sen_r.now > sen_r.threshold );
-          translation_ideal.distance = 8.0f;
-        } else {
-          translation_ideal.distance = 8.0f;
-        }
+        //while( sen_r.now > sen_r.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 45.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( -45.0f, 10000.0f, 500.0f, 1000.0f );
@@ -412,12 +402,9 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x06 );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
-        if ( sen_l.is_wall == 1 ){
-          while( sen_l.now > sen_l.threshold );
-          translation_ideal.distance = 11.0f;
-        } else {
-          translation_ideal.distance = 11.0f;
-        }
+        //while( sen_l.now > sen_l.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( 135.0f, 10000.0f, 800.0f, 1000.0f );
@@ -431,12 +418,9 @@ void adachiFastRunDiagonal1000( t_normal_param *translation, t_normal_param *rot
         fullColorLedOut( 0x06 );
         certainLedOut( LED_OFF );
         dirwall_control_flag = 1;
-        if ( sen_r.is_wall == 1 ){
-          while( sen_r.now > sen_r.threshold );
-          translation_ideal.distance = 8.0f;
-        } else {
-          translation_ideal.distance = 8.0f;
-        }
+        //while( sen_r.now > sen_r.threshold );
+        //translation_ideal.distance = 8.0f;
+
         setStraight( 23.0f, 0.0f, 1000.0f, 1000.0f, 1000.0f );
         waitStraight();
         setRotation( -135.0f, 10000.0f, 800.0f, 1000.0f );
