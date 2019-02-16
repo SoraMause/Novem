@@ -30,7 +30,6 @@ static uint8_t maze_goal_size = 1;
 
 void modeSelect( int8_t mode )
 {
-
   mode_init();
   log_init();
 
@@ -103,6 +102,8 @@ void mode_init( void )
   setPIDGain( &translation_gain, 1.5f, 30.0f, 0.0f );  
   setPIDGain( &rotation_gain, 0.47f, 45.0f, 0.0f ); 
   setPIDGain( &sensor_gain, 0.2f, 0.0f, 0.0f );
+
+  setSenDiffValue( 10 );
 
   // sensor 値設定
   setSensorConstant( &sen_front, 650, 140 );
@@ -241,12 +242,14 @@ void mode2( void )
     setNormalRunParam( &run_param, 8000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.0f, 40.0f, 0.0f );
+    setSenDiffValue( 30 );
   } else if ( speed_count == 1 ){
     speed_count = PARAM_1400;
     setNormalRunParam( &run_param, 18000.0f, 1000.0f );       // 加速度、速度指定
     setNormalRunParam( &rotation_param, 6300.0f, 450.0f );  // 角加速度、角速度指定  
     setPIDGain( &translation_gain, 2.6f, 40.0f, 0.0f );  
-    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f ); 
+    setPIDGain( &rotation_gain, 0.50f, 50.0f, 0.0f );
+    setSenDiffValue( 70 ); 
   }
   
   if ( agentDijkstraRoute( goal_x, goal_y, &wall_data, MAZE_CLASSIC_SIZE, 0, speed_count, 0 ) == 0 ){
@@ -405,8 +408,17 @@ void mode7( void )
   //setStraight( 254.56f, 18000.0f, 1400.0f, 1400.0f, 0.0f );
   //waitStraight();
 
-  //setStraight( 180.0f, 18000.0f, 1400.0f, 14000.0f, 0.0f );
-  //waitStraight();
+  setStraight( 40.0f, 18000.0f, 1000.0f, 0.0f, 1000.0f );
+  waitStraight();
+
+  setStraight( 180.0f, 18000.0f, 1400.0f, 1000.0f, 1400.0f );
+  waitStraight();
+
+  setStraight( 180.0f, 18000.0f, 1400.0f, 14000.0f, 1400.0f );
+  waitStraight();
+
+  setStraight( 180.0f, 18000.0f, 1400.0f, 14000.0f, 0.0f );
+  waitStraight();
 
   setLogFlag( 0 );
   waitMotion( 300 );
@@ -427,7 +439,7 @@ void mode8( void )
   setControlFlag( 0 );
   funControl( FUN_ON );
   waitMotion( 1000 );
-  //setControlFlag( 1 );
+  setControlFlag( 1 );
   translation_ideal.velocity = 0.0f;
   rotation_ideal.velocity = 0.0f;
   while( 1 );

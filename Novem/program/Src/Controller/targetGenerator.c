@@ -3,6 +3,13 @@
 static float sidewall_control_value = 0.0f;
 static float frontwall_control_value = 0.0f;
 
+static int16_t diff_value = 10;
+
+void setSenDiffValue( int16_t value )
+{
+  diff_value = value;
+}
+
 void setPIDGain( t_PID_param *param, float kp, float ki, float kd )
 {
   param->kp = kp;
@@ -85,23 +92,29 @@ void sideWallControl( void )
   // 横壁制御フラグが1のときのみ制御を行う
   float sen_error = 0.0f;
 
-  if ( sidewall_control_flag == 1 && (sen_l.diff < 10) && (sen_r.diff < 10) && (translation_ideal.velocity > 300.0f) ){
+  if ( sidewall_control_flag == 1 && (sen_l.diff < diff_value) && (sen_r.diff < diff_value) && (translation_ideal.velocity > 300.0f) ){
     if ( sen_l.is_wall == 1 && sen_r.is_wall == 1 ){
       sen_error = (float)( ( sen_l.now - sen_l.reference ) - ( sen_r.now - sen_r.reference ) );
-      if ( sen_error > 100.0f ){
-        sen_error = 100.0f;
+      if ( sen_error > 150.0f ){
+        sen_error = 150.0f;
+      } else if ( sen_error < -150.0f ){
+        sen_error = -150.0f;
       }
       sidewall_control_value = sensor_gain.kp * sen_error;
     } else if ( sen_l.is_wall == 1 && sen_r.is_wall == 0 ){
       sen_error = (float)( sen_l.now - sen_l.reference );
-      if ( sen_error > 100.0f ){
-        sen_error = 100.0f;
+      if ( sen_error > 150.0f ){
+        sen_error = 150.0f;
+      } else if ( sen_error < -150.0f ){
+        sen_error = -150.0f;
       }
       sidewall_control_value = 2.0f * sensor_gain.kp * sen_error;
     } else if( sen_r.is_wall == 1 && sen_l.is_wall == 0 ){
       sen_error = (float)( sen_r.now - sen_r.reference );
-      if ( sen_error > 100.0f ){
-        sen_error = 100.0f;
+      if ( sen_error > 150.0f ){
+        sen_error = 150.0f;
+      } else if ( sen_error < -150.0f ){
+        sen_error = -150.0f;
       }
       sidewall_control_value = -2.0f * sensor_gain.kp * sen_error;
     } else {
@@ -111,14 +124,14 @@ void sideWallControl( void )
     sidewall_control_value = 0.0f;
     // 4つのセンサのそれぞれの値の閾値を決めてそれに対して制御量を気持ち与える。
     // 2019 1/25 fl: , l: , fr: , r:
-    if ( sen_fl.now > 160 && sen_fl.diff < 50 ){
-      sidewall_control_value = (float)0.6f * ( sen_fl.now - 110 );
-    } else if ( sen_l.now > 700 && sen_l.diff_1ms < 50 ){
-      sidewall_control_value = (float)0.6f * ( sen_l.now - 650 );
-    } else if ( sen_fr.now > 140 && sen_fr.diff < 50 ){
-      sidewall_control_value = (float)-0.6f * ( sen_fr.now - 90 );
-    } else if ( sen_r.now > 600 && sen_r.diff_1ms < 50 ){
-      sidewall_control_value = (float)-0.6f * ( sen_r.now - 550 );
+    if ( sen_fl.now > 120 && sen_fl.diff < 100 ){
+      sidewall_control_value = (float)0.6f * ( sen_fl.now - 90 );
+    } else if ( sen_l.now > 700 && sen_l.diff_1ms < 100 ){
+      sidewall_control_value = (float)0.6f * ( sen_l.now - 660 );
+    } else if ( sen_fr.now > 110 && sen_fr.diff < 100 ){
+      sidewall_control_value = (float)-0.6f * ( sen_fr.now - 70 );
+    } else if ( sen_r.now > 450 && sen_r.diff_1ms < 100 ){
+      sidewall_control_value = (float)-0.6f * ( sen_r.now - 410 );
     }
   } else {
     sidewall_control_value = 0.0f;
@@ -131,7 +144,7 @@ void frontWallControl( void )
   // 前壁については普通にゲイン調整して合わせること。
   // 前壁制御フラグが1のときのみ制御を行う
   if ( frontwall_control_flag == 1 && sen_front.is_wall == 1 && right_real.velocity < 200.0f ){
-    frontwall_control_value = (float) 1.0f * (sen_front.now - sen_front.reference);
+    frontwall_control_value = (float) 0.5f * (sen_front.now - sen_front.reference);
   } else {
     frontwall_control_value = 0.0f;
   }

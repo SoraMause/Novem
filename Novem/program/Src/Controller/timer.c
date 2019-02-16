@@ -29,6 +29,7 @@ void interrupt( void )
 {
 
   cnt_motion++;
+  cnt_act++;
   
   // ジャイロセンサーのデータ更新
   if ( MPU6500_calc_check() == 0 ) {

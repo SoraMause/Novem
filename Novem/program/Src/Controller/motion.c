@@ -116,24 +116,28 @@ void runStraight( float accel , float distance, float start_vel, float run_vel, 
 void slaromCenterLeft( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 41.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_l.now > sen_l.threshold );
+  translation_ideal.distance = 9.8f;
+  setStraight( 20.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
-  setRotation( 90.0f, 14000.0f, 1000.0f, 1400.0f );
+  setRotation( 90.0f, 12000.0f, 720.0f, 1400.0f );
   waitRotation();
   sidewall_control_flag = 1;
-  setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 27.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
 void slaromCenterRight( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 41.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_r.now > sen_r.threshold );
+  translation_ideal.distance = 8.4f;
+  setStraight( 20.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
-  setRotation( -90.0f, 14000.0f, 1000.0f, 1400.0f );
+  setRotation( -90.0f, 12000.0f, 720.0f, 1400.0f );
   waitRotation();
   sidewall_control_flag = 1;
-  setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 27.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
@@ -141,24 +145,28 @@ void slaromCenterRight( float accel )
 void slaromCenterLeft180( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 40.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_l.now > sen_l.threshold );
+  translation_ideal.distance = 9.8f;
+  setStraight( 30.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
-  setRotation( 180.0f, 16000.0f, 920.0f, 1400.0f );
+  setRotation( 180.0f, 12000.0f, 960.0f, 1400.0f );
   waitRotation();
   sidewall_control_flag = 1;
-  setStraight( 54.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
 void slaromCenterRight180( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 40.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_r.now > sen_r.threshold );
+  translation_ideal.distance = 8.4f;
+  setStraight( 30.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
-  setRotation( -180.0f, 16000.0f, 920.0f, 1400.0f );
+  setRotation( -180.0f, 12000.0f, 960.0f, 1400.0f );
   waitRotation();
   sidewall_control_flag = 1;
-  setStraight( 54.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
@@ -166,7 +174,8 @@ void slaromCenterRight180( float accel )
 void slaromCenterLeft45( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 17.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_l.now > sen_l.threshold );
+  setStraight( 17.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 45.0f, 20000.0f, 900.0f, 1400.0f );
   waitRotation();
@@ -178,7 +187,8 @@ void slaromCenterLeft45( float accel )
 void slaromCenterRight45( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 17.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_r.now > sen_r.threshold );
+  setStraight( 17.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -45.0f, 20000.0f, 900.0f, 1400.0f );
   waitRotation();
@@ -191,7 +201,8 @@ void slaromCenterRight45( float accel )
 void slaromCenterLeft135( float accel )
 {
   sidewall_control_flag = 1;
-  setStraight( 40.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_l.now > sen_l.threshold );
+  setStraight( 40.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 135.0f, 25000.0f, 1000.0f, 1400.0f );
   waitRotation();
@@ -202,8 +213,10 @@ void slaromCenterLeft135( float accel )
 
 void slaromCenterRight135( float accel )
 {
+  
   sidewall_control_flag = 1;
-  setStraight( 40.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  while( sen_r.now > sen_r.threshold );
+  setStraight( 40.0f, accel, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -135.0f, 25000.0f, 1000.0f, 1400.0f );
   waitRotation();
@@ -216,12 +229,11 @@ void slaromCenterRight135( float accel )
 void slaromLeftV90( void )
 {
   dirwall_control_flag = 1;
-  if ( sen_l.is_wall == 1 ){
-    while( sen_l.now > sen_l.threshold );
-    translation_ideal.distance = 8.4f;
-  } else {
-    translation_ideal.distance = 8.4f;
+  while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
   }
+
   setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 90.0f, 30000.0f, 1200.0f, 1400.0f );
@@ -234,8 +246,10 @@ void slaromLeftV90( void )
 void slaromRightV90( void )
 {
   dirwall_control_flag = 1;
-  while( sen_r.now > sen_r.threshold );
-  translation_ideal.distance = 8.4f;
+  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
+  }
 
   setStraight( 26.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
@@ -251,15 +265,17 @@ void slaromReturnDiaLeft45( void )
 {
   dirwall_control_flag = 1;
 
-  while( sen_l.now > sen_l.threshold );
-  translation_ideal.distance = 8.4f;
+  while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
+  }
   
   setStraight( 55.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( 45.0f, 20000.0f, 900.0f, 1400.0f );
   waitRotation();
   dirwall_control_flag = 1;
-  setStraight( 23.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 22.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
@@ -267,15 +283,17 @@ void slaromReturnDiaRight45( void )
 {
   dirwall_control_flag = 1;
   
-  while( sen_r.now > sen_r.threshold );
-  translation_ideal.distance = 8.4f;
+  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
+  }
 
   setStraight( 55.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
   setRotation( -45.0f, 20000.0f, 900.0f, 1400.0f );
   waitRotation();
   sidewall_control_flag = 1;
-  setStraight( 23.0f, 18000.0f, 1400.0f, 1400.0f, 1400.0f );
+  setStraight( 22.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
 }
 
@@ -284,8 +302,10 @@ void slaromReturnDiaLeft135( void )
 {
   dirwall_control_flag = 1;
   
-  while( sen_l.now > sen_l.threshold );
-  translation_ideal.distance = 8.4f;
+  while( sen_l.now > sen_l.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
+  }
 
   setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();
@@ -300,8 +320,10 @@ void slaromReturnDiaRight135( void )
 {
   dirwall_control_flag = 1;
 
-  while( sen_r.now > sen_r.threshold );
-  translation_ideal.distance = 8.4f;
+  while( sen_r.now > sen_r.threshold && translation_ideal.distance < 15.0f );
+  if ( translation_ideal.distance < 15.0f ){
+      translation_ideal.distance = 8.4f;
+  }
 
   setStraight( 47.0f, 0.0f, 1400.0f, 1400.0f, 1400.0f );
   waitStraight();

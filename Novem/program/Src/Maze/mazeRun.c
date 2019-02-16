@@ -463,6 +463,7 @@ void adachiFastRunDiagonal1400( t_normal_param *translation, t_normal_param *rot
   
   setControlFlag( 0 );
   setLogFlag( 0 );
+  waitMotion( 1000 );
   funControl( FUN_ON );
   waitMotion( 1000 );
   setLogFlag( 1 );
