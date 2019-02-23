@@ -106,10 +106,10 @@ void mode_init( void )
   setSenDiffValue( 10 );
 
   // sensor 値設定
-  setSensorConstant( &sen_front, 650, 140 );
+  setSensorConstant( &sen_front, 600, 150 );
   // 区画中心　前壁 195
-  setSensorConstant( &sen_l, 305, 180 );
-  setSensorConstant( &sen_r, 250, 160 );
+  setSensorConstant( &sen_l, 340, 210 );
+  setSensorConstant( &sen_r, 240, 160 );
 
   certainLedOut( LED_FRONT );
   waitMotion( 100 );
